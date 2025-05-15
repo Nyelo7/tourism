@@ -1,0 +1,244 @@
+.profile-page {
+  padding-bottom: 80px;
+}
+
+.profile-header {
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+  padding: 0;
+}
+
+.profile-cover {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  height: 150px;
+  position: relative;
+}
+
+.profile-avatar-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--bg-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.level-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--primary);
+  color: var(--text-white);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border: 2px solid var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-info {
+  padding: calc(60px + var(--space-4)) var(--space-4) var(--space-4);
+  text-align: center;
+}
+
+.profile-info h1 {
+  color: var(--text-primary);
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+}
+
+.xp-progress {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.xp-bar {
+  height: 8px;
+  background: var(--border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
+  transition: width 0.3s ease;
+}
+
+.xp-text {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.stat-card {
+  text-align: center;
+  padding: var(--space-4);
+}
+
+.stat-card i {
+  font-size: var(--text-2xl);
+  color: var(--primary);
+  margin-bottom: var(--space-2);
+}
+
+.stat-card h3 {
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+  font-weight: 600;
+}
+
+.stat-card p {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.achievements-section,
+.recent-activity {
+  margin-bottom: var(--space-4);
+}
+
+.achievements-section h2,
+.recent-activity h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-primary);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-4);
+}
+
+.achievements-section h2 i,
+.recent-activity h2 i {
+  color: var(--primary);
+}
+
+.achievements-grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.achievement-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  transition: transform 0.3s ease;
+}
+
+.achievement-card:hover {
+  transform: translateX(5px);
+}
+
+.achievement-card i {
+  font-size: var(--text-2xl);
+  color: var(--primary);
+  width: 40px;
+  text-align: center;
+}
+
+.achievement-info h3 {
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  margin-bottom: var(--space-1);
+  font-weight: 500;
+}
+
+.achievement-info p {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.activity-list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  transition: transform 0.3s ease;
+}
+
+.activity-item:hover {
+  transform: translateX(5px);
+}
+
+.activity-item i {
+  font-size: var(--text-xl);
+  color: var(--primary);
+  width: 40px;
+  text-align: center;
+}
+
+.activity-info h3 {
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  margin-bottom: var(--space-1);
+  font-weight: 500;
+}
+
+.activity-info p {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .profile-info h1 {
+    font-size: var(--text-xl);
+  }
+  
+  .stat-card h3 {
+    font-size: var(--text-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .profile-avatar-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .level-badge {
+    width: 28px;
+    height: 28px;
+    font-size: var(--text-sm);
+  }
+} 

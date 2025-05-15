@@ -1,41 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 body {
-  font-family: sans-serif;
-  font-size: 1.5rem;
-}
-
-img {
-  max-width: 50vw;
-  max-height: 25vw;
-  display: block;
-  margin: auto;
-}
-
-form {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(ellipse at top left, #d6e6ff, #59c2ff);
+  color: #f1f5f9;
   display: flex;
   justify-content: center;
-  gap: 0.5em;
-  flex-flow: row wrap;
-  max-width: 40vw;
-  margin: auto;
-  align-items: baseline;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  text-align: center;
 }
 
-button[type="submit"] {
-  padding: 5px 20px;
-  margin: 10px auto;
-  float: right;
+.container {
+  max-width: 480px;
+  width: 100%;
+  background: linear-gradient(to bottom right, #374151ee, #ffffffee);
+  padding: 2rem;
+  border-radius: 32px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  border: 2px solid #60a5fa;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 1s ease-in-out;
 }
 
-#greeting {
-  margin: 10px auto;
-  padding: 10px 60px;
-  border: 1px solid #222;
+.container::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: radial-gradient(circle, rgba(147,197,253,0.15) 0%, transparent 70%);
+  z-index: 0;
 }
 
-#greeting:empty {
-  display: none;
+.container * {
+  position: relative;
+  z-index: 1;
 }
 
-.browser-warning {
-  display: none;
+h1 {
+  font-size: 2.2rem;
+  color: #93c5fd;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #d1d5db;
+}
+
+button {
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+button:hover {
+  background: linear-gradient(to right, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 7, 21, 0.45);
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem;
+    border-radius: 24px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 0.7rem 1.4rem;
+  }
+}
+
+.map-page {
+  padding: 1rem;
+  padding-bottom: 80px;
+  text-align: center;
+}
+
+.map-page h2 {
+  font-size: 54px;
+  font-family: 'Times New Roman', Times, serif;
+  margin-bottom: 1rem;
+  color: #5a0000;
+}
+
+.map-page .site-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .map-page .site-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.map-page .site-card {
+  background: #fffff5;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.map-page .site-card:hover {
+  transform: translateY(-5px);
+}
+
+.map-page .site-card img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 0.75rem;
+  transition: opacity 0.3s ease;
+}
+
+.map-page .site-card img:hover {
+  opacity: 0.9;
+}
+
+.map-page .site-card .site-title {
+  font-family:'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: #68aeff;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-page .site-card .site-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, #ffffff, #2563eb);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.map-page .site-card .site-title:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.map-page .site-card .site-title:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ff0000;
 }

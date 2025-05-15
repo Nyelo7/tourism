@@ -1,0 +1,20 @@
+.map-container {
+  padding: 1rem;
+  text-align: center;
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+    color: #1e3a8a; // navy/heritage tone
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
