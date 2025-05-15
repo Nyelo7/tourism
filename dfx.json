@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "tourism_backend": {
+      "main": "src/tourism_backend/main.mo",
+      "type": "motoko"
+    },
+    "tourism_frontend": {
+      "dependencies": [
+        "tourism_backend"
+      ],
+      "source": [
+        "src/tourism_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "tourism_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
