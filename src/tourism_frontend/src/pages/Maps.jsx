@@ -3,9 +3,12 @@ import pangasinanImg from '../images/pangasinan.png';
 import './Maps.css';
 import '../styles/theme.css';
 import BottomNav from './BottomNav1';
+import QRScanner from './QRScanner';
 
 const Map = () => {
   const [selectedRegion, setSelectedRegion] = useState(null);
+  const [showScanner, setShowScanner] = useState(false);
+  const [scanResult, setScanResult] = useState(null);
 
   const regions = [
     { id: 1, name: 'Lingayen', sites: 3, completed: 2 },
@@ -13,6 +16,39 @@ const Map = () => {
     { id: 3, name: 'Alaminos', sites: 5, completed: 3 },
     { id: 4, name: 'Dagupan', sites: 3, completed: 0 }
   ];
+
+  const handleQRResult = (result) => {
+    try {
+      // Expecting QR code data in format: "tourism:site:{regionId}:{siteId}"
+      const [prefix, type, regionId, siteId] = result.split(':');
+      
+      if (prefix === 'tourism' && type === 'site') {
+        const region = regions.find(r => r.id === parseInt(regionId));
+        if (region) {
+          setSelectedRegion(region.id);
+          setScanResult({
+            regionId: parseInt(regionId),
+            siteId: parseInt(siteId),
+            timestamp: new Date().toISOString()
+          });
+          
+          // You can add additional logic here, such as:
+          // - Marking the site as visited
+          // - Updating completion status
+          // - Showing site details
+          // - Navigating to the site's location on the map
+        } else {
+          console.error('Region not found:', regionId);
+        }
+      } else {
+        console.error('Invalid QR code format');
+      }
+    } catch (err) {
+      console.error('Error processing QR code:', err);
+    }
+    
+    setShowScanner(false);
+  };
 
   return (
     <div className="page-container map-page">
@@ -86,6 +122,21 @@ const Map = () => {
           </div>
         ))}
       </div>
+
+      <button 
+        className="floating-action-button"
+        onClick={() => setShowScanner(true)}
+        aria-label="Scan QR Code"
+      >
+        <i className="fas fa-qrcode"></i>
+      </button>
+
+      {showScanner && (
+        <QRScanner
+          onResult={handleQRResult}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
 
       <BottomNav />
     </div>
