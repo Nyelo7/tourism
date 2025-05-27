@@ -1,8 +1,8 @@
 import React from 'react';
-import './Profile.css';
+import '../styles/Profile.css';
 import '../styles/theme.css';
 import avatarImg from '../images/avatar.jpg';
-import BottomNav from './BottomNav1';
+import BottomNav from '../components/BottomNav1';
 
 const Profile = () => {
   // Simulated user data

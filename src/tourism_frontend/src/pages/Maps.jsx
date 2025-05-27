@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import pangasinanImg from '../images/pangasinan.png';
-import './Maps.css';
+import '../styles/Maps.css';
 import '../styles/theme.css';
-import BottomNav from './BottomNav1';
-import QRScanner from './QRScanner';
+import BottomNav from '../components/BottomNav1';
+import QRScanner from '../components/QRScanner';
 
 const Map = () => {
   const [selectedRegion, setSelectedRegion] = useState(null);

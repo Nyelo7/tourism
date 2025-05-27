@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import BottomNav from './BottomNav1';
+import BottomNav from '../components/BottomNav1';
 import bolinaoImage from '../images/bolinao.jpg';
 import hundredImage from '../images/hundreds.jpg';
 import manleluagImage from '../images/manleluag.jpg';
 import salasaImage from '../images/salasa.jpg';
-import './Home.css';
+import '../styles/Home.css';
 import '../styles/theme.css';
 
 const Home = () => {

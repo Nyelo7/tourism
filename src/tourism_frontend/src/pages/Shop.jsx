@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './Shop.css';
+import '../styles/Shop.css';
 import '../styles/theme.css';
-import BottomNav from './BottomNav1';
+import BottomNav from '../components/BottomNav1';
 
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');

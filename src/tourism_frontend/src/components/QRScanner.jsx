@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './QRScanner.css';
+import '../styles/QRScanner.css';
 
 const QRScanner = ({ onResult, onClose }) => {
   const videoRef = useRef(null);

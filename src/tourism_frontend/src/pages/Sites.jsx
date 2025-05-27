@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Sites.css';
+import '../styles/Sites.css';
 import '../styles/theme.css';
-import BottomNav from './BottomNav1';
+import BottomNav from '../components/BottomNav1';
 
 const Sites = () => {
   const [searchQuery, setSearchQuery] = useState('');

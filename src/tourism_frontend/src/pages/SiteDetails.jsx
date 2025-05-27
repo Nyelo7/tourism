@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './SiteDetails.css';
+import '../styles/SiteDetails.css';
 import '../styles/theme.css';
-import BottomNav from './BottomNav1';
+import BottomNav from '../components/BottomNav1';
 
 const SiteDetails = () => {
   const [activeTab, setActiveTab] = useState('about');
