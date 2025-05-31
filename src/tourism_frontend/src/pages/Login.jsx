@@ -117,13 +117,6 @@ const Login = () => {
             </button>
           </form>
         )}
-
-        <div className="login-footer">
-          <p>New to Pangasinan Explorer?</p>
-          <button onClick={() => navigate('/register')} className="button-secondary">
-            Create an Account
-          </button>
-        </div>
       </div>
     </div>
   );
