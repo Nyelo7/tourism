@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './SiteDetails.css';
+import '../styles/SiteDetails.css';
 import '../styles/theme.css';
-import BottomNav from './BottomNav1';
-import './Site.css';
+import BottomNav from '../components/BottomNav1';
+import '../styles/Site.css';
 import bolinaoImage from '../images/bolinao.jpg';
 
 const Site = () => {

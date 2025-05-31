@@ -1,8 +1,8 @@
 // src/pages/Dashboard.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Dashboard.css';
-import BottomNav from './BottomNav1';
+import '../styles/Dashboard.css';
+import BottomNav from '../components/BottomNav1';
 
 const Dashboard = () => {
   const navigate = useNavigate();

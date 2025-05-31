@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserProvider } from 'ethers';
 import { canisterId, createActor } from 'declarations/tourism_backend';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import '../styles/Login.css';
 import '../styles/theme.css';
 
 const Login = () => {
