@@ -19,7 +19,6 @@ const Map = () => {
 
   const handleQRResult = (result) => {
     try {
-      // Expecting QR code data in format: "tourism:site:{regionId}:{siteId}"
       const [prefix, type, regionId, siteId] = result.split(':');
       
       if (prefix === 'tourism' && type === 'site') {
@@ -32,11 +31,6 @@ const Map = () => {
             timestamp: new Date().toISOString()
           });
           
-          // You can add additional logic here, such as:
-          // - Marking the site as visited
-          // - Updating completion status
-          // - Showing site details
-          // - Navigating to the site's location on the map
         } else {
           console.error('Region not found:', regionId);
         }

@@ -8,6 +8,7 @@ import Site from './pages/Site';
 import Profile from './pages/Profile';
 import Map from './pages/Maps';
 import Shop from './pages/Shop'; // Create this file
+import LandingPage from './pages/LandingPage';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/site/:id" element={<Site />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/land" element={<LandingPage/>} />
       </Routes>
       
     </div>

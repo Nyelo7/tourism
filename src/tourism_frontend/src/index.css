@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  /* Define your custom colors as CSS custom properties (variables) */
+  --color-cyan-vibrant: #66D9ED;
+  --color-ocean-blue: #D5EFF7;
+  --color-charcoal-gray: #212121;
+  --color-optimistic-yellow: #FFD700;
+  --color-subtle-gray: #D0D3D4;
+
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  background-color: #DBEAFE;
+}
+
