@@ -1,2 +1,3 @@
 npm install react-slick slick-carousel
 npm install phosphor-react
+npm install react-animate-on-scroll --save

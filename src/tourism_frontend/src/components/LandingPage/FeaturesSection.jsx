@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollAnimation from 'react-animate-on-scroll';
 // Import the specific Phosphor Icon components you need
 import { MapTrifold, Wallet, Image, GlobeHemisphereWest } from '@phosphor-icons/react';
 
@@ -32,7 +33,7 @@ const FeaturesSection = () => {
       {/* Background shape/gradient for visual interest */}
       <div className="absolute inset-0 z-0 opacity-20">
         <div className="w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob top-0 left-full -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="w-96 h-96 bg-cyan-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000 bottom-0 right-full translate-x-1/2 translate-y-1/2"></div>
+        <div className="w-96 h-96 bg-cyan-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000 bottom-0 right-full translate-x-1/2 -translate-y-1/2"></div>
       </div>
 
       <div className="container mx-auto px-6 lg:px-8 text-center relative z-10">
@@ -42,29 +43,31 @@ const FeaturesSection = () => {
 
         <div className="flex flex-col gap-12 lg:gap-20">
           {features.map((feature, index) => (
-            <div
+            <ScrollAnimation
               key={index}
-              className={`flex flex-col ${
-                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-              } items-center gap-8 md:gap-12 lg:gap-16 bg-white p-6 md:p-8 lg:p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 animate-fade-in-up`}
-              style={{ animationDelay: `${0.1 * index}s` }}
+              animateIn="fadeInUp"
+              delay={index * 200} 
+              offset={150}
             >
-              {/* Image/Icon Column */}
-              <div className="w-full md:w-2/5 flex justify-center items-center p-4">
-                {/* Phosphor icons automatically pick up parent font-size.
-                    We're applying text-6xl, text-7xl, lg:text-8xl to the parent div
-                    to control the icon size. */}
-                <div className="text-6xl md:text-7xl lg:text-8xl text-cyan-500 bg-cyan-50 p-4 md:p-6 rounded-full shadow-lg">
-                  {feature.icon}
+              <div
+                className={`flex flex-col ${
+                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                } items-center gap-8 md:gap-12 lg:gap-16 bg-white p-6 md:p-8 lg:p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1`}
+              >
+                {/* Image/Icon Column */}
+                <div className="w-full md:w-2/5 flex justify-center items-center p-4">
+                  <div className="text-6xl md:text-7xl lg:text-8xl text-cyan-500 bg-cyan-50 p-4 md:p-6 rounded-full shadow-lg">
+                    {feature.icon}
+                  </div>
+                </div>
+
+                {/* Text Column */}
+                <div className="w-full md:w-3/5 text-center md:text-left p-4">
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-5 leading-snug">{feature.title}</h3>
+                  <p className="text-gray-600 text-base md:text-lg leading-relaxed">{feature.description}</p>
                 </div>
               </div>
-
-              {/* Text Column */}
-              <div className="w-full md:w-3/5 text-center md:text-left p-4">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-5 leading-snug">{feature.title}</h3>
-                <p className="text-gray-600 text-base md:text-lg leading-relaxed">{feature.description}</p>
-              </div>
-            </div>
+            </ScrollAnimation>
           ))}
         </div>
       </div>
