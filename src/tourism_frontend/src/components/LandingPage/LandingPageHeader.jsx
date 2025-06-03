@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 const LandingPageHeader = () => {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -7,12 +10,12 @@ const LandingPageHeader = () => {
     const handleScroll = () => {
       if (typeof window !== 'undefined') {
         if (window.scrollY > 80) {
-          if (window.scrollY > lastScrollY) { // if scrolling down
+          if (window.scrollY > lastScrollY) { 
             setIsVisible(false);
-          } else { // if scrolling up
+          } else { 
             setIsVisible(true);
           }
-        } else { // At the very top of the page, always show header
+        } else {
           setIsVisible(true);
         }
         setLastScrollY(window.scrollY);
@@ -38,7 +41,9 @@ const LandingPageHeader = () => {
         </a>
         <ul className="flex space-x-6 items-center">
           <li>
-            <button className="px-6 py-2 bg-cyan-vibrant text-charcoal-gray font-semibold border border-cyan-vibrant rounded-full hover:bg-optimistic-yellow hover:border-optimistic-yellow transition-all duration-300 transform hover:scale-105 shadow-md">
+            <button
+            onClick={() => navigate('/login')}
+            className="px-6 py-2 bg-cyan-vibrant text-charcoal-gray font-semibold border border-cyan-vibrant rounded-full hover:bg-optimistic-yellow hover:border-optimistic-yellow transition-all duration-300 transform hover:scale-105 shadow-md">
               Login
             </button>
           </li>
