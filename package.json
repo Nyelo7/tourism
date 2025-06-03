@@ -14,5 +14,10 @@
   "type": "module",
   "workspaces": [
     "src/tourism_frontend"
-  ]
+  ],
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1"
+  }
 }

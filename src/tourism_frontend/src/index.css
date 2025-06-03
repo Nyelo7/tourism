@@ -17,3 +17,51 @@ body {
   background-color: #DBEAFE;
 }
 
+/* Custom styles for slick-carousel dots */
+.slick-dots {
+  bottom: -40px !important; /* Adjust vertical position */
+}
+
+.slick-dots li button:before {
+  font-size: 12px !important; /* Size of the dots */
+  color: #fff !important; /* Default color of inactive dots */
+  opacity: 0.5 !important;
+  transition: all 0.3s ease;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #06b6d4 !important; /* Vibrant Cyan for active dot */
+  opacity: 1 !important;
+  font-size: 14px !important; /* Slightly larger active dot */
+}
+
+/* Custom styles for slick-carousel arrows */
+.slick-prev:before,
+.slick-next:before {
+  color: #fff !important; /* White color for arrows */
+  font-size: 30px !important; /* Size of the arrows */
+  opacity: 0.8 !important;
+  transition: all 0.3s ease;
+}
+
+.slick-prev:hover:before,
+.slick-next:hover:before {
+  color: #06b6d4 !important; /* Vibrant Cyan on hover */
+  opacity: 1 !important;
+}
+
+.slick-prev {
+  left: -40px !important; /* Adjust left arrow position */
+  z-index: 1; /* Ensure arrows are above content */
+}
+
+.slick-next {
+  right: -40px !important; /* Adjust right arrow position */
+  z-index: 1;
+}
+
+/* Ensure slides have space between them within the carousel */
+/* This can be achieved by applying horizontal padding directly to the div inside the map */
+/* .slick-slide > div {
+  padding: 0 10px;
+} */ /* This approach can also work, but applying px-4 to the div wrapping the card is more direct with Tailwind */
