@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
+
 import DestinationsSection from '../components/LandingPage/DestinationSection';
 import LandingPageHeader from '../components/LandingPage/LandingPageHeader';
 import HeroSection from '../components/LandingPage/HeroSection';
@@ -7,17 +9,56 @@ import TestimonialsSection from '../components/LandingPage/TestimonialSection';
 import CallToActionSection from '../components/LandingPage/CallToActionSection';
 import Footer from '../components/Footer';
 
-// --- Main Landing Page Component ---
+const fadeVariant = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: 'easeOut' }
+  }
+};
+
 const LandingPage = () => {
   return (
-    <div className="font-sans antialiased">
+    <div className="font-sans antialiased space-y-24">
       <LandingPageHeader />
       <HeroSection />
       <DestinationsSection />
-      <FeaturesSection />
-      <TestimonialsSection />
-      <CallToActionSection />
-      <Footer />
+      <motion.div
+        variants={fadeVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <FeaturesSection />
+      </motion.div>
+
+      <motion.div
+        variants={fadeVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <TestimonialsSection />
+      </motion.div>
+
+      <motion.div
+        variants={fadeVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <CallToActionSection />
+      </motion.div>
+
+      <motion.div
+        variants={fadeVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <Footer />
+      </motion.div>
     </div>
   );
 };
