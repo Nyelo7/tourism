@@ -1,29 +1,43 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import '../styles/BottomNav.css';
-import '../styles/theme.css';
+import {
+  FaHome,
+  FaMapMarkedAlt,
+  FaShoppingBag,
+  FaUser,
+  FaChartLine,
+} from 'react-icons/fa';
 
 const BottomNav = () => {
   const { pathname } = useLocation();
 
+  const navItems = [
+    { path: '/home', label: 'Home', icon: <FaHome /> },
+    { path: '/map', label: 'Map', icon: <FaMapMarkedAlt /> },
+    { path: '/shop', label: 'Shop', icon: <FaShoppingBag /> },
+    { path: '/profile', label: 'Profile', icon: <FaUser /> },
+    { path: '/dashboard', label: 'Dashboard', icon: <FaChartLine /> },
+  ];
+
   return (
-    <nav className="bottom-nav">
-      <Link to="/home" className={pathname === '/home' ? 'active' : ''}>
-        <i className="fas fa-home"></i>
-        <span>Home</span>
-      </Link>
-      <Link to="/map" className={pathname === '/map' ? 'active' : ''}>
-        <i className="fas fa-map-marked-alt"></i>
-        <span>Map</span>
-      </Link>
-      <Link to="/shop" className={pathname === '/shop' ? 'active' : ''}>
-        <i className="fas fa-shopping-bag"></i>
-        <span>Shop</span>
-      </Link>
-      <Link to="/profile" className={pathname === '/profile' ? 'active' : ''}>
-        <i className="fas fa-user"></i>
-        <span>Profile</span>
-      </Link>
+    <nav className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 backdrop-blur-md shadow-md rounded-xl px-6 py-3 flex justify-around items-center w-full md:w-3/4 lg:w-1/2 z-50">
+      {navItems.map(({ path, label, icon }) => {
+        const isActive = pathname === path;
+        return (
+          <Link
+            key={path}
+            to={path}
+            className={`flex flex-col items-center transition-transform duration-300 ${
+              isActive
+                ? 'text-blue-600 scale-105'
+                : 'text-gray-500 hover:text-blue-500 hover:scale-105'
+            }`}
+          >
+            <div className="text-xl mb-1">{icon}</div>
+            <span className="text-sm font-medium">{label}</span>
+          </Link>
+        );
+      })}
     </nav>
   );
 };

@@ -169,28 +169,6 @@ const Dashboard = () => {
                 ))}
               </div>
             </section>
-
-            <section className="quick-actions">
-              <h2>Quick Actions</h2>
-              <div className="actions-grid">
-                <button onClick={() => navigate('/map')}>
-                  <i className="fas fa-map-marked-alt"></i>
-                  Explore Map
-                </button>
-                <button onClick={() => navigate('/site')}>
-                  <i className="fas fa-compass"></i>
-                  Browse Sites
-                </button>
-                <button onClick={() => navigate('/shop')}>
-                  <i className="fas fa-store"></i>
-                  Visit Shop
-                </button>
-                <button onClick={() => navigate('/profile')}>
-                  <i className="fas fa-user"></i>
-                  View Profile
-                </button>
-              </div>
-            </section>
           </div>
         )}
 
