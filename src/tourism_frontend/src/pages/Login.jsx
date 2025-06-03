@@ -60,7 +60,7 @@ const Login = () => {
               transition-all duration-300
             "
             aria-label="Connect with MetaMask"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/home')}
           >
             <i className="fas fa-plug text-2xl"></i>
             <span>Connect Wallet</span>
