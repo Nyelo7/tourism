@@ -12,7 +12,7 @@ const CallToActionSection = () => {
           Join Hackatour today and redefine how you explore the world.
         </p>
         <button
-          onClick={() => navigate('/login')}
+          onClick={() => navigate('/signup')}
           className="px-12 py-5 rounded-full bg-optimistic-yellow text-charcoal-gray font-bold text-xl shadow-xl hover:bg-white transition duration-300 transform hover:scale-105 hover:shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
           Join Hackatour Now!
         </button>

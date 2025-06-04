@@ -17,7 +17,7 @@ const HeroSection = () => {
                     Your unforgettable journey starts here. Discover unique experiences, earn rewards, and connect with fellow explorers.
                 </p>
                 <button 
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/signup')}
                 className="mt-10 px-10 py-4 rounded-full bg-cyan-vibrant text-charcoal-gray font-bold text-lg shadow-xl hover:bg-optimistic-yellow transition duration-300 transform hover:scale-105 hover:shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                     Start Exploring
                 </button>

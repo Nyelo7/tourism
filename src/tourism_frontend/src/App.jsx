@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import Map from './pages/Maps';
 import Shop from './pages/Shop'; // Create this file
 import LandingPage from './pages/LandingPage';
+import Signup from './pages/Signup';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/home" element={<Home />} />
