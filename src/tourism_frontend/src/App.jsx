@@ -10,6 +10,7 @@ import Map from './pages/Maps';
 import Shop from './pages/Shop'; // Create this file
 import LandingPage from './pages/LandingPage';
 import Signup from './pages/Signup';
+import DagupanPage from './pages/city/Dagupan';
 
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
         <Route path="/site/:id" element={<Site />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/shop" element={<Shop />} />
+
+
+        <Route path="/city/dagupan" element={<DagupanPage />} />
       </Routes>
       
     </div>

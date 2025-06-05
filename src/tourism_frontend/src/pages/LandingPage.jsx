@@ -8,6 +8,7 @@ import FeaturesSection from '../components/LandingPage/FeaturesSection';
 import TestimonialsSection from '../components/LandingPage/TestimonialSection';
 import CallToActionSection from '../components/LandingPage/CallToActionSection';
 import Footer from '../components/Footer';
+import JourneySection from '../components/LandingPage/JourneySection';
 
 const fadeVariant = {
   hidden: { opacity: 0, y: 40 },
@@ -24,6 +25,7 @@ const LandingPage = () => {
       <LandingPageHeader />
       <HeroSection />
       <DestinationsSection />
+      <JourneySection />
       <motion.div
         variants={fadeVariant}
         initial="hidden"
@@ -32,7 +34,6 @@ const LandingPage = () => {
       >
         <FeaturesSection />
       </motion.div>
-
       <motion.div
         variants={fadeVariant}
         initial="hidden"
