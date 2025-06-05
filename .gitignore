@@ -25,4 +25,5 @@ dist/
 .env
 
 
-# **/*Zone.identifier
+**/*Zone.identifier
+*:Zone.Identifier
