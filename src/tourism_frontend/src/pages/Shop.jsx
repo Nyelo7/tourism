@@ -48,7 +48,7 @@ const Shop = () => {
       views: 12050,
       edition: "1/50",
       benefits: [
-        "25% discount on private island tours",
+        "10% discount on selected shops",
         "Exclusive VIP holder events",
         "10% resale royalties",
         "Private yacht access",
@@ -72,7 +72,7 @@ const Shop = () => {
       views: 8920,
       edition: "12/100",
       benefits: [
-        "20% discount on lighthouse tours",
+        "10% discount on selected shops",
         "Signed digital certificate",
         "Commercial usage rights",
         "Artist meet & greet",
@@ -95,10 +95,9 @@ const Shop = () => {
       views: 4450,
       edition: "Limited Edition",
       benefits: [
+        "3% discount on selected shops",
         "Blockchain authenticity certificate",
         "Premium packaging",
-        "Lifetime warranty",
-        "Member exclusive colorways",
       ],
     },
     {
@@ -116,7 +115,7 @@ const Shop = () => {
       views: 15670,
       edition: "Genesis #47",
       benefits: [
-        "Profile verification checkmark",
+        "10% discount on selected shops",
         "DAO governance rights",
         "Achievement tracking",
         "Priority access to drops",
@@ -139,7 +138,7 @@ const Shop = () => {
       views: 7230,
       edition: "25/200",
       benefits: [
-        "4K animated artwork",
+        "5% discount on selected shops",
         "Seasonal updates",
         "Community voting rights",
         "Staking rewards",
@@ -160,7 +159,7 @@ const Shop = () => {
       likes: 670,
       views: 3340,
       edition: "Collector's Edition",
-      benefits: ["NFC verification technology", "Platinum plating", "Luxury gift box", "Collector community access"],
+      benefits: ["3% discount on selected shops", "Platinum plating", "Luxury gift box", "Collector community access"],
     },
   ]
 
