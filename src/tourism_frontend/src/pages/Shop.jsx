@@ -15,6 +15,8 @@ import {
   Crown,
   Gem,
   ArrowRight,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react"
 import BottomNav from "../components/BottomNav1"
 
@@ -40,9 +42,8 @@ const Shop = () => {
       maxPointsDiscount: 4000,
       rank: "gold",
       type: "nft",
-      description:
-        "Ultra-rare NFT collection featuring photorealistic Hundred Islands artwork with exclusive utility benefits.",
-      image: "/placeholder.svg?height=400&width=400",
+      description: "Ultra-rare NFT collection featuring photorealistic Hundred Islands artwork.",
+      image: "/placeholder.svg?height=300&width=300",
       likes: 2340,
       views: 12050,
       edition: "1/50",
@@ -52,6 +53,8 @@ const Shop = () => {
         "10% resale royalties",
         "Private yacht access",
         "Concierge services",
+        "Priority customer support",
+        "DAO governance voting rights",
       ],
     },
     {
@@ -63,30 +66,31 @@ const Shop = () => {
       maxPointsDiscount: 2500,
       rank: "silver",
       type: "nft",
-      description:
-        "Museum-quality digital masterpiece of the historic Cape Bolinao Lighthouse by renowned digital artist.",
-      image: "/placeholder.svg?height=400&width=400",
+      description: "Museum-quality digital masterpiece by renowned digital artist.",
+      image: "/placeholder.svg?height=300&width=300",
       likes: 1560,
       views: 8920,
       edition: "12/100",
       benefits: [
-        "20% discount on lighthouse premium tours",
+        "20% discount on lighthouse tours",
         "Signed digital certificate",
-        "Full commercial usage rights",
+        "Commercial usage rights",
         "Artist meet & greet",
+        "Early access to new drops",
+        "Exclusive holder events",
       ],
     },
     {
       id: 3,
-      name: "Artisan Travel Collection T-Shirt",
+      name: "Artisan Travel T-Shirt",
       category: "physical",
       basePrice: 2.3,
       minPrice: 0,
       maxPointsDiscount: 4000,
       rank: "bronze",
       type: "physical",
-      description: "Hand-crafted premium cotton tee with blockchain-verified authenticity and limited production run.",
-      image: "/placeholder.svg?height=400&width=400",
+      description: "Hand-crafted premium cotton tee with blockchain authenticity.",
+      image: "/placeholder.svg?height=300&width=300",
       likes: 890,
       views: 4450,
       edition: "Limited Edition",
@@ -106,17 +110,18 @@ const Shop = () => {
       maxPointsDiscount: 3000,
       rank: "gold",
       type: "nft",
-      description: "Genesis collection digital badge proving elite exploration achievements with governance utility.",
-      image: "/placeholder.svg?height=400&width=400",
+      description: "Genesis collection digital badge with governance utility.",
+      image: "/placeholder.svg?height=300&width=300",
       likes: 3120,
       views: 15670,
       edition: "Genesis #47",
       benefits: [
-        "Profile verification with blue checkmark",
-        "Exclusive DAO governance rights",
-        "Achievement tracking system",
-        "Priority access to new drops",
+        "Profile verification checkmark",
+        "DAO governance rights",
+        "Achievement tracking",
+        "Priority access to drops",
         "Annual holder rewards",
+        "Exclusive community access",
       ],
     },
     {
@@ -128,12 +133,18 @@ const Shop = () => {
       maxPointsDiscount: 2000,
       rank: "silver",
       type: "nft",
-      description: "Premium animated collectible with dynamic weather effects and seasonal transformations.",
-      image: "/placeholder.svg?height=400&width=400",
+      description: "Premium animated collectible with dynamic effects.",
+      image: "/placeholder.svg?height=300&width=300",
       likes: 1780,
       views: 7230,
       edition: "25/200",
-      benefits: ["4K animated artwork", "Seasonal updates", "Community voting rights", "Staking rewards"],
+      benefits: [
+        "4K animated artwork",
+        "Seasonal updates",
+        "Community voting rights",
+        "Staking rewards",
+        "Tier-specific discounts",
+      ],
     },
     {
       id: 6,
@@ -144,8 +155,8 @@ const Shop = () => {
       maxPointsDiscount: 2000,
       rank: "bronze",
       type: "physical",
-      description: "Handcrafted platinum-plated enamel pins with NFC chips and luxury presentation box.",
-      image: "/placeholder.svg?height=400&width=400",
+      description: "Handcrafted platinum-plated pins with NFC chips.",
+      image: "/placeholder.svg?height=300&width=300",
       likes: 670,
       views: 3340,
       edition: "Collector's Edition",
@@ -157,23 +168,23 @@ const Shop = () => {
 
   const getRankColor = (rank) => {
     const colors = {
-      bronze: "text-amber-700 bg-gradient-to-r from-amber-100 to-orange-100 border-amber-300",
-      silver: "text-slate-700 bg-gradient-to-r from-slate-100 to-gray-100 border-slate-300",
-      gold: "text-yellow-700 bg-gradient-to-r from-yellow-100 to-amber-100 border-yellow-300",
+      bronze: "text-amber-700 bg-amber-100 border-amber-300",
+      silver: "text-slate-700 bg-slate-100 border-slate-300",
+      gold: "text-yellow-700 bg-yellow-100 border-yellow-300",
     }
-    return colors[rank] || "text-slate-700 bg-gradient-to-r from-slate-100 to-gray-100 border-slate-300"
+    return colors[rank] || "text-slate-700 bg-slate-100 border-slate-300"
   }
 
   const getRankIcon = (rank) => {
     switch (rank) {
       case "gold":
-        return <Crown className="w-4 h-4" />
+        return <Crown className="w-3 h-3" />
       case "silver":
-        return <Gem className="w-4 h-4" />
+        return <Gem className="w-3 h-3" />
       case "bronze":
-        return <Star className="w-4 h-4" />
+        return <Star className="w-3 h-3" />
       default:
-        return <Star className="w-4 h-4" />
+        return <Star className="w-3 h-3" />
     }
   }
 
@@ -188,190 +199,179 @@ const Shop = () => {
     }
   }
 
-  const ShopItemCard = ({ item }) => {
+  const CompactShopCard = ({ item }) => {
     const [pointsToUse, setPointsToUse] = useState(0)
-    const [showFullBenefits, setShowFullBenefits] = useState(false)
+    const [showDetails, setShowDetails] = useState(false)
     const calculation = calculatePrice(item, pointsToUse)
     const maxUsablePoints = Math.min(userPoints, item.maxPointsDiscount)
 
     return (
-      <div className="bg-white rounded-3xl shadow-xl border border-slate-200 hover:shadow-2xl hover:border-cyan-300 transition-all duration-500 overflow-hidden group">
-        {/* Image Header */}
-        <div className="relative h-80 bg-gradient-to-br from-slate-100 via-cyan-50 to-teal-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 hover:shadow-xl hover:border-cyan-300 transition-all duration-300 overflow-hidden">
+        {/* Compact Image Header */}
+        <div className="relative h-48 bg-gradient-to-br from-slate-100 to-cyan-50 overflow-hidden">
           <img
             src={item.image || "/placeholder.svg"}
             alt={item.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
           />
 
-          {/* Image Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
 
           {/* Top Badges */}
-          <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+          <div className="absolute top-3 left-3 right-3 flex justify-between">
             <div
-              className={`px-3 py-2 rounded-xl text-sm font-bold border-2 backdrop-blur-md shadow-lg ${getRankColor(item.rank)}`}
+              className={`px-2 py-1 rounded-lg text-xs font-bold border backdrop-blur-sm ${getRankColor(item.rank)}`}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 {getRankIcon(item.rank)}
                 {item.rank.toUpperCase()}
               </div>
             </div>
-
             {item.type === "nft" && (
-              <div className="bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-lg backdrop-blur-sm">
-                PREMIUM NFT
+              <div className="bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-2 py-1 rounded-lg text-xs font-bold">
+                NFT
               </div>
             )}
           </div>
 
-          {/* Bottom Info */}
-          <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-            <div className="bg-black/80 backdrop-blur-sm text-white px-3 py-2 rounded-lg">
-              <div className="text-xs text-gray-300">Edition</div>
-              <div className="text-sm font-bold">{item.edition}</div>
+          {/* Bottom Stats */}
+          <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+            <div className="bg-black/70 text-white px-2 py-1 rounded text-xs">
+              <div className="text-white/80">Edition</div>
+              <div className="font-bold">{item.edition}</div>
             </div>
-
-            <div className="flex gap-3">
-              <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3 py-2 rounded-xl shadow-lg">
-                <Heart className="w-4 h-4 text-red-500" />
-                <span className="text-sm font-bold text-slate-700">{item.likes.toLocaleString()}</span>
+            <div className="flex gap-2">
+              <div className="flex items-center gap-1 bg-white/90 px-2 py-1 rounded-lg">
+                <Heart className="w-3 h-3 text-red-500" />
+                <span className="text-xs font-bold">{(item.likes / 1000).toFixed(1)}k</span>
               </div>
-              <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3 py-2 rounded-xl shadow-lg">
-                <Eye className="w-4 h-4 text-slate-500" />
-                <span className="text-sm font-bold text-slate-700">{item.views.toLocaleString()}</span>
+              <div className="flex items-center gap-1 bg-white/90 px-2 py-1 rounded-lg">
+                <Eye className="w-3 h-3 text-slate-500" />
+                <span className="text-xs font-bold">{(item.views / 1000).toFixed(1)}k</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Content Section */}
-        <div className="p-6">
-          {/* Title and Description */}
-          <div className="mb-6">
-            <h3 className="text-2xl font-black text-slate-900 mb-3 leading-tight">{item.name}</h3>
-            <p className="text-slate-600 leading-relaxed">{item.description}</p>
+        {/* Compact Content */}
+        <div className="p-4">
+          {/* Title & Price */}
+          <div className="mb-3">
+            <h3 className="font-bold text-lg text-slate-900 mb-1 line-clamp-2">{item.name}</h3>
+            <p className="text-sm text-slate-600 mb-2 line-clamp-2">{item.description}</p>
+
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="text-xl font-black text-slate-900">{item.basePrice} ICP</div>
+                <div className="text-xs text-slate-500">≈ ${(item.basePrice * 12.5).toFixed(0)} USD</div>
+              </div>
+              <button
+                onClick={() => setShowDetails(!showDetails)}
+                className="flex items-center gap-1 text-cyan-600 hover:text-cyan-700 text-sm font-medium"
+              >
+                Details
+                {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
-          {/* Benefits Section */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="text-sm font-black text-slate-800 uppercase tracking-wider">Premium Benefits</h4>
-              {item.benefits.length > 3 && (
-                <button
-                  onClick={() => setShowFullBenefits(!showFullBenefits)}
-                  className="text-xs text-cyan-600 font-bold hover:text-cyan-700 transition-colors"
-                >
-                  {showFullBenefits ? "Show Less" : `+${item.benefits.length - 3} More`}
-                </button>
+          {/* Expandable Details */}
+          {showDetails && (
+            <div className="space-y-4 border-t border-slate-200 pt-4">
+              {/* Benefits Preview */}
+              <div>
+                <h4 className="text-xs font-bold text-slate-800 uppercase mb-2">Key Benefits</h4>
+                <div className="space-y-1">
+                  {item.benefits.slice(0, 3).map((benefit, index) => (
+                    <div key={index} className="flex items-start gap-2">
+                      <Check className="w-3 h-3 text-emerald-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-xs text-slate-600">{benefit}</span>
+                    </div>
+                  ))}
+                  {item.benefits.length > 3 && (
+                    <div className="text-xs text-cyan-600 font-medium">+{item.benefits.length - 3} more benefits</div>
+                  )}
+                </div>
+              </div>
+
+              {/* NFT Notice */}
+              {item.type === "nft" && (
+                <div className="bg-cyan-50 border border-cyan-200 p-3 rounded-lg">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Info className="w-3 h-3 text-cyan-600" />
+                    <span className="text-xs font-bold text-cyan-800">NFT Minimum</span>
+                  </div>
+                  <p className="text-xs text-cyan-700">Min {item.minPrice} ICP required for blockchain fees.</p>
+                </div>
               )}
-            </div>
 
-            <div className="space-y-2">
-              {(showFullBenefits ? item.benefits : item.benefits.slice(0, 3)).map((benefit, index) => (
-                <div key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <Check className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-600 font-medium">{benefit}</span>
+              {/* Points Slider */}
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="text-xs font-bold text-slate-800">Use Points</label>
+                  <span className="text-xs text-slate-500">Max: {maxUsablePoints.toLocaleString()}</span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Price Section */}
-          <div className="border-t border-slate-200 pt-6">
-            {/* Base Price Display */}
-            <div className="flex justify-between items-center mb-4 p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl border border-slate-200">
-              <span className="text-sm font-semibold text-slate-700">Base Price</span>
-              <div className="text-right">
-                <div className="text-2xl font-black text-slate-900">{item.basePrice} ICP</div>
-                <div className="text-xs text-slate-500">≈ ${(item.basePrice * 12.5).toFixed(2)} USD</div>
-              </div>
-            </div>
-
-            {/* NFT Minimum Notice */}
-            {item.type === "nft" && (
-              <div className="bg-gradient-to-r from-cyan-50 to-teal-50 border border-cyan-200 p-4 rounded-xl mb-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Info className="w-4 h-4 text-cyan-600" />
-                  <span className="text-sm font-semibold text-cyan-800">NFT Minimum Payment</span>
+                <input
+                  type="range"
+                  min="0"
+                  max={maxUsablePoints}
+                  value={pointsToUse}
+                  onChange={(e) => setPointsToUse(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-cyan"
+                />
+                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                  <span>0</span>
+                  <span className="font-bold text-cyan-600">{pointsToUse.toLocaleString()}</span>
+                  <span>{maxUsablePoints.toLocaleString()}</span>
                 </div>
-                <p className="text-xs text-cyan-700">
-                  Minimum {item.minPrice} ICP required for blockchain fees and creator royalties.
-                </p>
-              </div>
-            )}
-
-            {/* Points Slider */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-3">
-                <label className="text-sm font-semibold text-slate-800">Use Reward Points</label>
-                <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
-                  Max: {maxUsablePoints.toLocaleString()}
-                </span>
               </div>
 
-              <input
-                type="range"
-                min="0"
-                max={maxUsablePoints}
-                value={pointsToUse}
-                onChange={(e) => setPointsToUse(Number(e.target.value))}
-                className="w-full h-3 bg-gradient-to-r from-slate-200 to-slate-300 rounded-lg appearance-none cursor-pointer slider-cyan mb-2"
-              />
-
-              <div className="flex justify-between text-xs text-slate-500">
-                <span>0 pts</span>
-                <span className="font-bold text-cyan-600 bg-cyan-50 px-2 py-1 rounded-full">
-                  {pointsToUse.toLocaleString()} pts
-                </span>
-                <span>{maxUsablePoints.toLocaleString()} pts</span>
-              </div>
-            </div>
-
-            {/* Price Calculation */}
-            <div className="bg-gradient-to-br from-cyan-50 via-teal-50 to-blue-50 border-2 border-cyan-200 p-5 rounded-xl mb-6 shadow-inner">
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-700 font-medium">Points Applied:</span>
-                  <span className="text-cyan-600 font-bold">-{calculation.pointsUsed.toLocaleString()} pts</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-700 font-medium">ICP Discount:</span>
-                  <span className="text-emerald-600 font-bold">-{calculation.savings.toFixed(3)} ICP</span>
-                </div>
-                <div className="border-t-2 border-cyan-200 pt-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-800 font-bold text-lg">Final Price:</span>
-                    <div className="text-right">
-                      <div className="text-3xl font-black text-transparent bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text">
-                        {calculation.finalPrice.toFixed(3)} ICP
+              {/* Price Calculation */}
+              <div className="bg-gradient-to-r from-cyan-50 to-teal-50 border border-cyan-200 p-3 rounded-lg">
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-slate-600">Points:</span>
+                    <span className="text-cyan-600 font-bold">-{calculation.pointsUsed.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-600">Savings:</span>
+                    <span className="text-emerald-600 font-bold">-{calculation.savings.toFixed(3)} ICP</span>
+                  </div>
+                  <div className="border-t border-cyan-200 pt-1">
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-slate-800">Final:</span>
+                      <div className="text-right">
+                        <div className="text-lg font-black text-cyan-600">{calculation.finalPrice.toFixed(3)} ICP</div>
+                        <div className="text-xs text-slate-500">
+                          ≈ ${(calculation.finalPrice * 12.5).toFixed(0)} USD
+                        </div>
                       </div>
-                      <div className="text-xs text-slate-500">≈ ${(calculation.finalPrice * 12.5).toFixed(2)} USD</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          )}
 
-            {/* Purchase Button */}
-            <button
-              className="w-full bg-gradient-to-r from-cyan-500 via-teal-500 to-blue-500 hover:from-cyan-600 hover:via-teal-600 hover:to-blue-600 text-white py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 font-bold text-lg shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98] group"
-              disabled={icpBalance < calculation.finalPrice}
-            >
-              {icpBalance < calculation.finalPrice ? (
-                <>
-                  <Wallet className="w-5 h-5" />
-                  Insufficient ICP Balance
-                </>
-              ) : (
-                <>
-                  <Wallet className="w-5 h-5" />
-                  Purchase for {calculation.finalPrice.toFixed(3)} ICP
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
-            </button>
-          </div>
+          {/* Purchase Button */}
+          <button
+            className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 font-bold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={icpBalance < calculation.finalPrice}
+          >
+            {icpBalance < calculation.finalPrice ? (
+              <>
+                <Wallet className="w-4 h-4" />
+                Insufficient Balance
+              </>
+            ) : (
+              <>
+                <Wallet className="w-4 h-4" />
+                {showDetails ? `Buy ${calculation.finalPrice.toFixed(3)} ICP` : "Purchase"}
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
         </div>
       </div>
     )
@@ -379,109 +379,96 @@ const Shop = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50 to-teal-50 pb-20">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-white via-cyan-50 to-teal-50 shadow-xl border-b-2 border-cyan-200">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Crown className="w-8 h-8 text-yellow-500" />
-              <h1 className="text-5xl font-black bg-gradient-to-r from-cyan-600 via-teal-600 to-blue-600 bg-clip-text text-transparent">
+      {/* Compact Header */}
+      <div className="bg-white shadow-lg border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="text-center mb-6">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Crown className="w-6 h-6 text-yellow-500" />
+              <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
                 Luxury Web3 Marketplace
               </h1>
-              <Gem className="w-8 h-8 text-cyan-500" />
+              <Gem className="w-6 h-6 text-cyan-500" />
             </div>
-            <p className="text-slate-600 text-xl font-medium">
-              Premium NFT collectibles and exclusive luxury souvenirs
-            </p>
+            <p className="text-slate-600">Premium NFT collectibles and exclusive luxury souvenirs</p>
           </div>
 
-          {/* User Balance */}
-          <div className="flex justify-center gap-8 mb-8">
-            <div className="flex items-center gap-4 bg-gradient-to-r from-cyan-100 to-teal-100 border-2 border-cyan-300 px-8 py-4 rounded-2xl shadow-lg">
-              <Wallet className="w-8 h-8 text-cyan-600" />
+          {/* Compact Balance */}
+          <div className="flex justify-center gap-6 mb-6">
+            <div className="flex items-center gap-3 bg-gradient-to-r from-cyan-100 to-teal-100 border border-cyan-300 px-6 py-3 rounded-xl">
+              <Wallet className="w-5 h-5 text-cyan-600" />
               <div>
-                <div className="font-black text-slate-900 text-2xl">{icpBalance} ICP</div>
-                <div className="text-sm text-slate-600 font-medium">≈ ${(icpBalance * 12.5).toFixed(2)} USD</div>
-                <div className="text-xs text-slate-500">Wallet Balance</div>
+                <div className="font-black text-slate-900">{icpBalance} ICP</div>
+                <div className="text-xs text-slate-500">≈ ${(icpBalance * 12.5).toFixed(0)} USD</div>
               </div>
             </div>
-            <div className="flex items-center gap-4 bg-gradient-to-r from-amber-100 to-orange-100 border-2 border-amber-300 px-8 py-4 rounded-2xl shadow-lg">
-              <Coins className="w-8 h-8 text-amber-600" />
+            <div className="flex items-center gap-3 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 px-6 py-3 rounded-xl">
+              <Coins className="w-5 h-5 text-amber-600" />
               <div>
-                <div className="font-black text-slate-900 text-2xl">{userPoints.toLocaleString()}</div>
-                <div className="text-sm text-slate-600 font-medium">Premium Points</div>
-                <div className="text-xs text-slate-500">Reward Balance</div>
+                <div className="font-black text-slate-900">{userPoints.toLocaleString()}</div>
+                <div className="text-xs text-slate-500">Premium Points</div>
               </div>
             </div>
           </div>
 
-          {/* Premium Info */}
-          <div className="bg-gradient-to-r from-yellow-100 via-amber-100 to-orange-100 border-2 border-yellow-300 p-6 rounded-2xl shadow-lg">
-            <div className="flex items-center gap-3 mb-3">
-              <Crown className="w-6 h-6 text-yellow-600" />
-              <span className="font-bold text-yellow-800 text-lg">Premium Discount System</span>
+          {/* Compact Info */}
+          <div className="bg-gradient-to-r from-yellow-100 to-amber-100 border border-yellow-300 p-4 rounded-xl">
+            <div className="flex items-center gap-2 mb-2">
+              <Crown className="w-4 h-4 text-yellow-600" />
+              <span className="font-bold text-yellow-800">Premium Discount System</span>
             </div>
-            <p className="text-yellow-700 font-medium">
-              Use premium points to unlock significant discounts on luxury items! NFTs maintain minimum values to
-              preserve exclusivity and creator royalties.
-            </p>
+            <p className="text-sm text-yellow-700">Use premium points for significant discounts on luxury items!</p>
           </div>
         </div>
       </div>
 
       {/* Categories */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex gap-4 overflow-x-auto pb-4 mb-10">
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="flex gap-3 overflow-x-auto pb-2 mb-6">
           {categories.map((category) => {
             const IconComponent = category.icon
             return (
               <button
                 key={category.id}
-                className={`flex items-center gap-3 px-8 py-4 rounded-2xl whitespace-nowrap transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 ${
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl whitespace-nowrap transition-all duration-200 font-bold ${
                   selectedCategory === category.id
-                    ? "bg-gradient-to-r from-cyan-500 via-teal-500 to-blue-500 text-white shadow-2xl scale-105"
-                    : "bg-white text-slate-700 hover:bg-gradient-to-r hover:from-slate-50 hover:to-cyan-50 border-2 border-slate-200 hover:border-cyan-300"
+                    ? "bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg"
+                    : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-200 hover:border-cyan-300"
                 }`}
                 onClick={() => setSelectedCategory(category.id)}
               >
-                <IconComponent className="w-6 h-6" />
+                <IconComponent className="w-5 h-5" />
                 {category.name}
               </button>
             )
           })}
         </div>
 
-        {/* Items Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+        {/* Compact Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredItems.map((item) => (
-            <ShopItemCard key={item.id} item={item} />
+            <CompactShopCard key={item.id} item={item} />
           ))}
         </div>
 
-        {/* Luxury Features */}
-        <div className="mt-20 bg-gradient-to-r from-slate-100 via-cyan-100 to-teal-100 border-2 border-cyan-300 rounded-3xl p-10 shadow-2xl">
-          <h2 className="text-3xl font-black text-slate-900 mb-8 text-center">Luxury Web3 Experience</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-white/50 backdrop-blur-sm rounded-2xl shadow-lg">
-              <div className="text-5xl mb-6">🔗</div>
-              <h3 className="font-bold text-slate-900 mb-3 text-xl">Blockchain Certified</h3>
-              <p className="text-slate-600 font-medium">
-                Every item is permanently recorded on the ICP blockchain with immutable ownership and provenance
-              </p>
+        {/* Compact Features */}
+        <div className="mt-12 bg-gradient-to-r from-slate-100 to-cyan-100 border border-cyan-200 rounded-2xl p-6">
+          <h2 className="text-2xl font-black text-slate-900 mb-6 text-center">Web3 Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="text-3xl mb-3">🔗</div>
+              <h3 className="font-bold text-slate-900 mb-2">Blockchain Certified</h3>
+              <p className="text-sm text-slate-600">Permanent ICP blockchain records</p>
             </div>
-            <div className="text-center p-6 bg-white/50 backdrop-blur-sm rounded-2xl shadow-lg">
-              <div className="text-5xl mb-6">💎</div>
-              <h3 className="font-bold text-slate-900 mb-3 text-xl">True Digital Ownership</h3>
-              <p className="text-slate-600 font-medium">
-                Own premium digital assets with full control, transferability, and exclusive utility benefits
-              </p>
+            <div className="text-center">
+              <div className="text-3xl mb-3">💎</div>
+              <h3 className="font-bold text-slate-900 mb-2">True Ownership</h3>
+              <p className="text-sm text-slate-600">Full control and transferability</p>
             </div>
-            <div className="text-center p-6 bg-white/50 backdrop-blur-sm rounded-2xl shadow-lg">
-              <div className="text-5xl mb-6">👑</div>
-              <h3 className="font-bold text-slate-900 mb-3 text-xl">VIP Utility Access</h3>
-              <p className="text-slate-600 font-medium">
-                Unlock exclusive real-world experiences, premium discounts, and VIP treatment worldwide
-              </p>
+            <div className="text-center">
+              <div className="text-3xl mb-3">👑</div>
+              <h3 className="font-bold text-slate-900 mb-2">VIP Access</h3>
+              <p className="text-sm text-slate-600">Exclusive experiences and discounts</p>
             </div>
           </div>
         </div>
