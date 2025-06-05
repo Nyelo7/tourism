@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import pangasinanImg from '../images/pangasinan.png';
-import '../styles/Maps.css';
-import '../styles/theme.css';
 import BottomNav from '../components/BottomNav1';
 import QRScanner from '../components/QRScanner';
 
@@ -20,7 +18,6 @@ const Map = () => {
   const handleQRResult = (result) => {
     try {
       const [prefix, type, regionId, siteId] = result.split(':');
-      
       if (prefix === 'tourism' && type === 'site') {
         const region = regions.find(r => r.id === parseInt(regionId));
         if (region) {
@@ -30,7 +27,6 @@ const Map = () => {
             siteId: parseInt(siteId),
             timestamp: new Date().toISOString()
           });
-          
         } else {
           console.error('Region not found:', regionId);
         }
@@ -40,75 +36,79 @@ const Map = () => {
     } catch (err) {
       console.error('Error processing QR code:', err);
     }
-    
     setShowScanner(false);
   };
 
   return (
-    <div className="page-container map-page">
-      <div className="map-header card fade-in">
-        <h1>Heritage Map</h1>
-        <p className="subtitle">Explore cultural landmarks across Pangasinan</p>
-        
-        <div className="map-stats">
-          <div className="map-stat">
-            <i className="fas fa-map-marker-alt"></i>
+    <div className="min-h-screen bg-white flex flex-col pb-20">
+      <div className="bg-white shadow-md rounded-xl p-6 mx-4 mt-4 animate-fade-in">
+        <h1 className="text-2xl font-bold text-gray-800">Heritage Map</h1>
+        <p className="text-gray-500">Explore cultural landmarks across Pangasinan</p>
+
+        <div className="flex justify-around mt-6">
+          <div className="flex items-center space-x-2">
+            <i className="fas fa-map-marker-alt text-lg text-blue-500"></i>
             <div>
-              <h3>15</h3>
-              <p>Total Sites</p>
+              <h3 className="text-lg font-bold text-gray-700">15</h3>
+              <p className="text-sm text-gray-500">Total Sites</p>
             </div>
           </div>
-          <div className="map-stat">
-            <i className="fas fa-check-circle"></i>
+          <div className="flex items-center space-x-2">
+            <i className="fas fa-check-circle text-lg text-green-500"></i>
             <div>
-              <h3>6</h3>
-              <p>Visited</p>
+              <h3 className="text-lg font-bold text-gray-700">6</h3>
+              <p className="text-sm text-gray-500">Visited</p>
             </div>
           </div>
-          <div className="map-stat">
-            <i className="fas fa-trophy"></i>
+          <div className="flex items-center space-x-2">
+            <i className="fas fa-trophy text-lg text-yellow-500"></i>
             <div>
-              <h3>40%</h3>
-              <p>Completed</p>
+              <h3 className="text-lg font-bold text-gray-700">40%</h3>
+              <p className="text-sm text-gray-500">Completed</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="map-content card fade-in">
-        <div className="map-wrapper">
-          <img src={pangasinanImg} alt="Pangasinan Heritage Map" className="map-image" />
-          <div className="map-overlay">
-            {/* Add interactive map markers here */}
+      <div className="mx-4 mt-4 animate-fade-in">
+        <div className="relative rounded-xl overflow-hidden shadow-md max-w-2xl w-full mx-auto lg:w-2/4">
+          <img
+            src={pangasinanImg}
+            alt="Pangasinan Heritage Map"
+            className="w-full h-auto object-cover"
+          />
+          <div className="absolute inset-0">
+            {/* Interactive markers go here */}
           </div>
         </div>
       </div>
 
-      <div className="regions-grid">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-4 mt-6">
         {regions.map(region => (
-          <div 
-            key={region.id} 
-            className={`region-card card fade-in ${selectedRegion === region.id ? 'active' : ''}`}
+          <div
+            key={region.id}
+            className={`p-4 rounded-xl shadow-md transition-colors duration-300 cursor-pointer ${selectedRegion === region.id ? 'bg-blue-100 border-2 border-blue-400' : 'bg-white'
+              } animate-fade-in`}
             onClick={() => setSelectedRegion(region.id)}
           >
-            <div className="region-header">
-              <h3>{region.name}</h3>
-              <span className="completion-badge">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-lg font-semibold text-gray-800">{region.name}</h3>
+              <span className="text-sm bg-blue-200 text-blue-800 px-2 py-1 rounded-full">
                 {region.completed}/{region.sites}
               </span>
             </div>
-            <div className="progress-bar">
-              <div 
-                className="progress-fill"
+            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+              <div
+                className="h-full bg-blue-500"
                 style={{ width: `${(region.completed / region.sites) * 100}%` }}
               ></div>
             </div>
-            <div className="region-footer">
+            <div className="flex justify-between items-center text-sm text-gray-600">
               <span>
-                <i className="fas fa-landmark"></i>
+                <i className="fas fa-landmark mr-1"></i>
                 {region.sites} Heritage Sites
               </span>
-              <button className="button-primary">
+              <button className="flex items-center gap-1 text-blue-600 font-medium hover:underline">
                 Explore
                 <i className="fas fa-arrow-right"></i>
               </button>
@@ -117,12 +117,12 @@ const Map = () => {
         ))}
       </div>
 
-      <button 
-        className="floating-action-button"
+      <button
+        className="fixed bottom-24 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition"
         onClick={() => setShowScanner(true)}
         aria-label="Scan QR Code"
       >
-        <i className="fas fa-qrcode"></i>
+        <i className="fas fa-qrcode text-xl"></i>
       </button>
 
       {showScanner && (
