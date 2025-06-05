@@ -11,6 +11,9 @@ import Shop from './pages/Shop'; // Create this file
 import LandingPage from './pages/LandingPage';
 import Signup from './pages/Signup';
 import DagupanPage from './pages/city/Dagupan';
+import AlaminosPage from './pages/city/Alaminos';
+import ManaoagPage from './pages/city/Manaoag';
+import BolinaoPage from './pages/city/Bolinao';
 
 
 function App() {
@@ -31,6 +34,9 @@ function App() {
 
 
         <Route path="/city/dagupan" element={<DagupanPage />} />
+        <Route path="/city/alaminos" element={<AlaminosPage />} />
+        <Route path="/city/manaoag" element={<ManaoagPage />} />
+        <Route path="/city/bolinao" element={<BolinaoPage />} />
       </Routes>
       
     </div>
