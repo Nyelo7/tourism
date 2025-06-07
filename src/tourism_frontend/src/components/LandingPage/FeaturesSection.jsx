@@ -10,8 +10,8 @@ const features = [
   },
   {
     icon: <Wallet weight="duotone" />,
-    title: 'Earn Crypto Tokens',
-    description: 'Get rewarded with crypto tokens for your adventures and valuable contributions to our growing community.',
+    title: 'Gain Points for Discounts',
+    description: 'Earn points by completing missions and use them in the NFT shop to get discounts on exclusive digital collectibles.',
   },
   {
     icon: <Image weight="duotone" />,
@@ -20,9 +20,9 @@ const features = [
   },
   {
     icon: <GlobeHemisphereWest weight="duotone" />,
-    title: 'Web3 Powered Adventures',
-    description: 'Embark on the future of travel with decentralized, transparent, and community-governed experiences.',
-  },
+    title: 'NFT Perks & Benefits',
+    description: 'Own special NFTs to unlock exclusive perks like VIP access, partner discounts, and other premium rewards.',
+  }
 ];
 
 const fadeInVariant = (direction = "left") => ({

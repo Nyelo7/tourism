@@ -2,16 +2,16 @@
 const TestimonialsSection = () => {
   const testimonials = [
     {
-      quote: "Hackatour transformed my travel experience! Earning tokens while exploring was a game-changer.",
-      author: "Maria S. - Adventure Enthusiast"
+      quote: "Hackatour transformed my travel experience!",
+      author: "Christopher DG. - Adventure Enthusiast"
     },
     {
-      quote: "The digital souvenirs are amazing! It's like having a unique piece of each journey.",
-      author: "John D. - Digital Nomad"
+      quote: "The NFT Badges are amazing! It's like having a unique piece of each journey.",
+      author: "Robe s.- Digital Nomad"
     },
     {
       quote: "A truly innovative platform. The community features are fantastic for discovering new places.",
-      author: "Sarah L. - Travel Blogger"
+      author: "Melquezedek C. - Travel Blogger"
     },
   ];
 

@@ -16,7 +16,7 @@ const BottomNav = () => {
     { path: '/map', label: 'Map', icon: <FaMapMarkedAlt /> },
     { path: '/shop', label: 'Shop', icon: <FaShoppingBag /> },
     { path: '/profile', label: 'Profile', icon: <FaUser /> },
-    { path: '/dashboard', label: 'Dashboard', icon: <FaChartLine /> },
+    // { path: '/dashboard', label: 'Dashboard', icon: <FaChartLine /> },
   ];
 
   return (

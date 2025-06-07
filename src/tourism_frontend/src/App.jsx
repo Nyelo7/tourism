@@ -14,6 +14,7 @@ import DagupanPage from './pages/city/Dagupan';
 import AlaminosPage from './pages/city/Alaminos';
 import ManaoagPage from './pages/city/Manaoag';
 import BolinaoPage from './pages/city/Bolinao';
+import FAQ from './pages/faq';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="faq" element={<FAQ/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/register" element={<Register />} />
