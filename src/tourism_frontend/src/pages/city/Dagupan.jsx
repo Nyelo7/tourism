@@ -1,8 +1,16 @@
 "use client"
 import { useState, useEffect, useMemo } from "react"
-import { ArrowLeft, MapPin, Star, Users, Camera, Trophy, Clock, CheckCircle } from "lucide-react"
+import { ArrowLeft, MapPin, Star, Users, Trophy, Clock, CheckCircle, Gamepad2 } from "lucide-react"
 import { useNavigate } from 'react-router-dom';
+import GamifiedTaskModal from "../../components/gamified-task-modal"
+import { generateTasksForAttraction, saveTaskProgress, loadTaskProgress } from "../../utils/task-generator"
+
 const DagupanPage = () => {
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [selectedAttraction, setSelectedAttraction] = useState(null)
+  const [attractionTasks, setAttractionTasks] = useState([])
+  const [totalUserPoints, setTotalUserPoints] = useState(0)
+
   // Tourist attractions in Dagupan City
   const attractions = [
     {
@@ -115,13 +123,27 @@ const DagupanPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [debouncedSearch, setDebouncedSearch] = useState("")
 
-  // Simulate loading
+  const navigate = useNavigate();
+  const goToHome = () => {
+    navigate('/home');
+  };
+
+  useEffect(() => {
+    let totalPoints = 0
+    attractions.forEach((attraction) => {
+      const progress = loadTaskProgress(attraction.name, "Dagupan")
+      if (progress) {
+        totalPoints += progress.points || 0
+      }
+    })
+    setTotalUserPoints(totalPoints)
+  }, [])
+
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000)
     return () => clearTimeout(timer)
   }, [])
 
-  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchText)
@@ -129,13 +151,8 @@ const DagupanPage = () => {
     return () => clearTimeout(timer)
   }, [searchText])
 
-  // Get unique categories
   const categories = ["All", ...new Set(attractions.map((attraction) => attraction.category))]
-   const navigate = useNavigate();
-   const goToHome = () => {
-    navigate('/home'); // replace with your target route
-  };
-  // Filter attractions
+
   const filteredAttractions = useMemo(() => {
     return attractions.filter((attraction) => {
       const searchLower = debouncedSearch.toLowerCase()
@@ -146,19 +163,70 @@ const DagupanPage = () => {
     })
   }, [debouncedSearch])
 
-  // Calculate stats
   const stats = useMemo(() => {
     const visitedCount = attractions.filter((a) => a.isVisited).length
     const totalVisits = attractions.reduce((sum, a) => sum + (a.isVisited ? a.visitCount : 0), 0)
     const completionRate = Math.round((visitedCount / attractions.length) * 100)
+
+    let totalCompletedTasks = 0
+    let totalTasks = 0
+    attractions.forEach((attraction) => {
+      const tasks = generateTasksForAttraction(attraction.name, attraction.category)
+      totalTasks += tasks.length
+      const progress = loadTaskProgress(attraction.name, "Dagupan")
+      if (progress) {
+        totalCompletedTasks += progress.completedTasks?.length || 0
+      }
+    })
 
     return {
       visited: visitedCount,
       total: attractions.length,
       totalVisits,
       completionRate,
+      totalCompletedTasks,
+      totalTasks,
     }
-  }, [])
+  }, [attractions])
+
+  const handleOpenTaskModal = (attraction) => {
+    const tasks = generateTasksForAttraction(attraction.name, attraction.category)
+    const progress = loadTaskProgress(attraction.name, "Dagupan")
+    const updatedTasks = tasks.map((task) => ({
+      ...task,
+      isCompleted: progress?.completedTasks?.includes(task.id) || false,
+    }))
+
+    setSelectedAttraction(attraction)
+    setAttractionTasks(updatedTasks)
+    setIsTaskModalOpen(true)
+  }
+
+  const handleTaskComplete = (taskId) => {
+    if (!selectedAttraction) return
+
+    setAttractionTasks((prev) => {
+      const updatedTasks = prev.map((task) => {
+        if (task.id === taskId && !task.isCompleted) {
+          return { ...task, isCompleted: true }
+        }
+        return task
+      })
+
+      const completedTaskIds = updatedTasks.filter((t) => t.isCompleted).map((t) => t.id)
+      const points = updatedTasks.reduce((sum, task) => sum + (task.isCompleted ? task.points : 0), 0)
+
+      saveTaskProgress(selectedAttraction.name, "Dagupan", completedTaskIds, points)
+
+      setTotalUserPoints((prev) => {
+        const oldProgress = loadTaskProgress(selectedAttraction.name, "Dagupan")
+        const oldPoints = oldProgress?.points || 0
+        return prev - oldPoints + points
+      })
+
+      return updatedTasks
+    })
+  }
 
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -190,8 +258,6 @@ const DagupanPage = () => {
     </div>
   )
 
- 
-
   return (
     <div
       className="bg-[#D5EFF7] min-h-screen font-sans"
@@ -207,15 +273,23 @@ const DagupanPage = () => {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <button 
-            onClick={goToHome}
-            className="flex items-center space-x-2 text-[#212121] hover:text-[#66D9ED] transition-colors">
+            <button
+              onClick={goToHome}
+              className="flex items-center space-x-2 text-[#212121] hover:text-[#66D9ED] transition-colors">
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Cities</span>
             </button>
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-5 h-5 text-[#66D9ED]" />
-              <span className="font-semibold text-[#212121]">Dagupan City</span>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <MapPin className="w-5 h-5 text-[#66D9ED]" />
+                <span className="font-semibold text-[#212121]">Dagupan City</span>
+              </div>
+              {totalUserPoints > 0 && (
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-semibold flex items-center space-x-2">
+                  <Trophy className="w-5 h-5" />
+                  <span>{totalUserPoints} pts</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -258,7 +332,12 @@ const DagupanPage = () => {
               label="Total Visits"
               color="text-blue-600"
             />
-            <StatCard icon={<Camera />} value={stats.visited * 3} label="Photos Taken" color="text-purple-600" />
+            <StatCard
+              icon={<Gamepad2 />}
+              value={`${stats.totalCompletedTasks}/${stats.totalTasks}`}
+              label="Tasks Completed"
+              color="text-purple-600"
+            />
           </div>
         </section>
 
@@ -303,6 +382,8 @@ const DagupanPage = () => {
                     className="relative group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
                     style={{
                       animationDelay: `${index * 100}ms`,
+                      // Note: fadeInUp animation assumes it's defined in a global CSS file
+                      // If not, remove this line or add the keyframes to your global CSS.
                       animation: "fadeInUp 0.6s ease-out forwards",
                     }}
                   >
@@ -351,33 +432,37 @@ const DagupanPage = () => {
                         </div>
                       </div>
 
-                      {/* Stats */}
-                      <div className="flex justify-between items-center text-xs text-gray-500 mb-4">
-                        <div className="flex items-center space-x-3">
-                          <span className="flex items-center space-x-1">
-                            <Users className="w-3 h-3" />
-                            <span>{attraction.visitCount}</span>
-                          </span>
-                          <span className="flex items-center space-x-1">
-                            <Clock className="w-3 h-3" />
-                            <span>{attraction.estimatedTime}</span>
+                      {/* Stats and Action Button wrapped in a single parent div */}
+                      <div> 
+                        {/* Stats */}
+                        <div className="flex justify-between items-center text-xs text-gray-500 mb-4">
+                          <div className="flex items-center space-x-3">
+                            <span className="flex items-center space-x-1">
+                              <Users className="w-3 h-3" />
+                              <span>{attraction.visitCount}</span>
+                            </span>
+                            <span className="flex items-center space-x-1">
+                              <Clock className="w-3 h-3" />
+                              <span>{attraction.estimatedTime}</span>
+                            </span>
+                          </div>
+                          <span className="bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full font-medium">
+                            {attraction.difficulty}
                           </span>
                         </div>
-                        <span className="bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full font-medium">
-                          {attraction.difficulty}
-                        </span>
-                      </div>
 
-                      {/* Action Button */}
-                      <button
-                        className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-                          attraction.isVisited
-                            ? "bg-cyan-100 text-cyan-700 hover:bg-cyan-200"
-                            : "bg-[#66D9ED] text-white hover:bg-[#4F9CF9] shadow-lg hover:shadow-xl"
-                        }`}
-                      >
-                        Travel
-                      </button>
+                        {/* Action Button */}
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleOpenTaskModal(attraction)}
+                            className="flex-1 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 bg-[#66D9ED] text-white hover:bg-[#4F9CF9] shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                          >
+                            <span>Travel</span>
+                            <Gamepad2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div> {/* End of wrapper div */}
+
                     </div>
                   </div>
                 ))
@@ -401,18 +486,18 @@ const DagupanPage = () => {
         </section>
       </main>
 
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+      {/* Gamified Task Modal */}
+      {selectedAttraction && (
+        <GamifiedTaskModal
+          isOpen={isTaskModalOpen}
+          onClose={() => setIsTaskModalOpen(false)}
+          destinationName="Dagupan"
+          attractionName={selectedAttraction.name}
+          tasks={attractionTasks}
+          onTaskComplete={handleTaskComplete}
+          userPoints={totalUserPoints}
+        />
+      )}
     </div>
   )
 }

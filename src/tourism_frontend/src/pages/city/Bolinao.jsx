@@ -1,15 +1,22 @@
 "use client"
 import { useState, useEffect, useMemo } from "react"
-import { ArrowLeft, MapPin, Star, Users, Camera, Trophy, Clock, CheckCircle } from "lucide-react"
+import { ArrowLeft, MapPin, Star, Users, Trophy, Clock, CheckCircle, Gamepad2 } from "lucide-react"
 import { useNavigate } from 'react-router-dom';
+import GamifiedTaskModal from "../../components/gamified-task-modal" // Ensure this path is correct
+import { generateTasksForAttraction, saveTaskProgress, loadTaskProgress } from "../../utils/task-generator" // Ensure this path is correct
 
-const BolinaoPage = () => {
-  // Tourist attractions in Bolinao
+const Bolinao = () => {
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [selectedAttraction, setSelectedAttraction] = useState(null)
+  const [attractionTasks, setAttractionTasks] = useState([])
+  const [totalUserPoints, setTotalUserPoints] = useState(0)
+
+  // Tourist attractions in Bolinao - This data remains exactly as you provided for Bolinao
   const attractions = [
     {
       id: 1,
       name: "Cape Bolinao Lighthouse",
-      image: "bolinao-cape.jpg",
+      image: "/bolinao-cape.jpg", // Ensure path starts with / for public folder access
       description: "A historic lighthouse offering stunning views of the West Philippine Sea.",
       category: "Landmark",
       rating: 4.8,
@@ -22,7 +29,7 @@ const BolinaoPage = () => {
     {
       id: 2,
       name: "Patar Beach",
-      image: "bolinao-patar.jpg",
+      image: "/bolinao-patar.jpg", // Ensure path starts with /
       description: "A pristine white sand beach known for its crystal-clear waters and golden sunsets.",
       category: "Beach",
       rating: 4.7,
@@ -35,7 +42,7 @@ const BolinaoPage = () => {
     {
       id: 3,
       name: "Enchanted Cave",
-      image: "bolinao-cave.jpg",
+      image: "/bolinao-cave.jpg", // Ensure path starts with /
       description: "A natural cave with a clear underground pool, ideal for a refreshing swim.",
       category: "Nature",
       rating: 4.6,
@@ -48,7 +55,7 @@ const BolinaoPage = () => {
     {
       id: 4,
       name: "Bolinao Falls",
-      image: "bolinao-falls.jpg",
+      image: "/bolinao-falls.jpg", // Ensure path starts with /
       description: "A series of cascading waterfalls surrounded by lush greenery, perfect for nature lovers.",
       category: "Nature",
       rating: 4.5,
@@ -61,7 +68,7 @@ const BolinaoPage = () => {
     {
       id: 5,
       name: "St. James the Great Parish Church",
-      image: "bolinao-church.jpg",
+      image: "/bolinao-church.jpg", // Ensure path starts with /
       description: "A historic church with beautiful architecture, a spiritual and cultural landmark.",
       category: "Religious",
       rating: 4.4,
@@ -74,7 +81,7 @@ const BolinaoPage = () => {
     {
       id: 6,
       name: "Rock Garden View Deck",
-      image: "bolinao-rock.jpg",
+      image: "/bolinao-rock.jpg", // Ensure path starts with /
       description: "A scenic viewpoint with unique rock formations and panoramic coastal views.",
       category: "Landmark",
       rating: 4.3,
@@ -84,12 +91,28 @@ const BolinaoPage = () => {
       estimatedTime: "1-2 hours",
       highlights: ["Rock Formations", "Coastal Views", "Photo Opportunity"],
     },
-    
   ]
 
   const [searchText, setSearchText] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const [debouncedSearch, setDebouncedSearch] = useState("")
+
+  const navigate = useNavigate();
+  const goToHome = () => {
+    navigate('/home'); // replace with your target route
+  };
+
+  // Calculate total points from all attractions (gamification feature)
+  useEffect(() => {
+    let totalPoints = 0
+    attractions.forEach((attraction) => {
+      const progress = loadTaskProgress(attraction.name, "Bolinao") // Destination name is Bolinao
+      if (progress) {
+        totalPoints += progress.points || 0
+      }
+    })
+    setTotalUserPoints(totalPoints)
+  }, [])
 
   // Simulate loading
   useEffect(() => {
@@ -105,13 +128,6 @@ const BolinaoPage = () => {
     return () => clearTimeout(timer)
   }, [searchText])
 
-  // Get unique categories
-  const categories = ["All", ...new Set(attractions.map((attraction) => attraction.category))]
-  const navigate = useNavigate();
-  const goToHome = () => {
-    navigate('/home'); // replace with your target route
-  };
-
   // Filter attractions
   const filteredAttractions = useMemo(() => {
     return attractions.filter((attraction) => {
@@ -123,19 +139,77 @@ const BolinaoPage = () => {
     })
   }, [debouncedSearch])
 
-  // Calculate stats
+  // Calculate stats (updated with gamification stats)
   const stats = useMemo(() => {
     const visitedCount = attractions.filter((a) => a.isVisited).length
     const totalVisits = attractions.reduce((sum, a) => sum + (a.isVisited ? a.visitCount : 0), 0)
     const completionRate = Math.round((visitedCount / attractions.length) * 100)
+
+    // Calculate total completed tasks across all attractions for Bolinao
+    let totalCompletedTasks = 0
+    let totalTasks = 0
+    attractions.forEach((attraction) => {
+      const progress = loadTaskProgress(attraction.name, "Bolinao") // Destination name is Bolinao
+      const tasks = generateTasksForAttraction(attraction.name, attraction.category)
+      totalTasks += tasks.length
+      if (progress) {
+        totalCompletedTasks += progress.completedTasks?.length || 0
+      }
+    })
 
     return {
       visited: visitedCount,
       total: attractions.length,
       totalVisits,
       completionRate,
+      totalCompletedTasks,
+      totalTasks,
     }
   }, [])
+
+  // Functions for task modal
+  const handleOpenTaskModal = (attraction) => {
+    const tasks = generateTasksForAttraction(attraction.name, attraction.category)
+
+    // Load saved progress
+    const progress = loadTaskProgress(attraction.name, "Bolinao") // Destination name is Bolinao
+    const updatedTasks = tasks.map((task) => ({
+      ...task,
+      isCompleted: progress?.completedTasks?.includes(task.id) || false,
+    }))
+
+    setSelectedAttraction(attraction)
+    setAttractionTasks(updatedTasks)
+    setIsTaskModalOpen(true)
+  }
+
+  const handleTaskComplete = (taskId) => {
+    if (!selectedAttraction) return
+
+    setAttractionTasks((prev) => {
+      const updatedTasks = prev.map((task) => {
+        if (task.id === taskId && !task.isCompleted) {
+          return { ...task, isCompleted: true }
+        }
+        return task
+      })
+
+      // Save progress
+      const completedTaskIds = updatedTasks.filter((t) => t.isCompleted).map((t) => t.id)
+      const points = updatedTasks.reduce((sum, task) => sum + (task.isCompleted ? task.points : 0), 0)
+
+      saveTaskProgress(selectedAttraction.name, "Bolinao", completedTaskIds, points) // Destination name is Bolinao
+
+      // Update total points
+      setTotalUserPoints((prev) => {
+        const oldProgress = loadTaskProgress(selectedAttraction.name, "Bolinao") // Destination name is Bolinao
+        const oldPoints = oldProgress?.points || 0
+        return prev - oldPoints + points
+      })
+
+      return updatedTasks
+    })
+  }
 
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -182,15 +256,23 @@ const BolinaoPage = () => {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <button 
+            <button
               onClick={goToHome}
               className="flex items-center space-x-2 text-[#212121] hover:text-[#66D9ED] transition-colors">
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Cities</span>
             </button>
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-5 h-5 text-[#66D9ED]" />
-              <span className="font-semibold text-[#212121]">Bolinao</span>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <MapPin className="w-5 h-5 text-[#66D9ED]" />
+                <span className="font-semibold text-[#212121]">Bolinao</span>
+              </div>
+              {totalUserPoints > 0 && ( // Display total points
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-semibold flex items-center space-x-2">
+                  <Trophy className="w-5 h-5" />
+                  <span>{totalUserPoints} pts</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -233,14 +315,18 @@ const BolinaoPage = () => {
               label="Total Visits"
               color="text-blue-600"
             />
-            <StatCard icon={<Camera />} value={stats.visited * 3} label="Photos Taken" color="text-purple-600" />
+            <StatCard
+              icon={<Gamepad2 />}
+              value={`${stats.totalCompletedTasks}/${stats.totalTasks}`}
+              label="Tasks Completed"
+              color="text-purple-600"
+            />
           </div>
         </section>
 
-        {/* Search and Filter Section */}
+        {/* Search Section */}
         <section className="mb-8">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            {/* Search */}
             <div className="flex items-center bg-white rounded-full shadow-lg px-6 py-3 border border-[#D0D3D4] hover:shadow-xl transition-all duration-300 focus-within:ring-4 focus-within:ring-cyan-100 w-full md:w-96">
               <div className="text-gray-400 mr-3">🔍</div>
               <input
@@ -343,16 +429,16 @@ const BolinaoPage = () => {
                         </span>
                       </div>
 
-                      {/* Action Button */}
-                      <button
-                        className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-                          attraction.isVisited
-                            ? "bg-cyan-100 text-cyan-700 hover:bg-cyan-200"
-                            : "bg-[#66D9ED] text-white hover:bg-[#4F9CF9] shadow-lg hover:shadow-xl"
-                        }`}
-                      >
-                        Travel
-                      </button>
+                      {/* Action Button - changed to use gamified task modal */}
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleOpenTaskModal(attraction)}
+                          className="flex-1 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 bg-[#66D9ED] text-white hover:bg-[#4F9CF9] shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                        >
+                          <span>Travel</span>
+                          <Gamepad2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))
@@ -360,14 +446,12 @@ const BolinaoPage = () => {
                 <div className="col-span-full text-center py-16">
                   <div className="text-6xl mb-4">🔍</div>
                   <h3 className="text-xl font-semibold text-gray-700 mb-2">No attractions found</h3>
-                  <p className="text-gray-500 mb-6">Try adjusting your search or filter criteria</p>
+                  <p className="text-gray-500 mb-6">Try adjusting your search criteria</p>
                   <button
-                    onClick={() => {
-                      setSearchText("")
-                    }}
+                    onClick={() => setSearchText("")}
                     className="bg-[#66D9ED] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#4F9CF9] transition-all duration-300 transform hover:scale-105"
                   >
-                    Reset Filters
+                    Reset Search
                   </button>
                 </div>
               )}
@@ -376,20 +460,34 @@ const BolinaoPage = () => {
         </section>
       </main>
 
+      {/* Gamified Task Modal */}
+      {selectedAttraction && (
+        <GamifiedTaskModal
+          isOpen={isTaskModalOpen}
+          onClose={() => setIsTaskModalOpen(false)}
+          destinationName="Bolinao" // Set destination to Bolinao
+          attractionName={selectedAttraction.name}
+          tasks={attractionTasks}
+          onTaskComplete={handleTaskComplete}
+          userPoints={totalUserPoints}
+        />
+      )}
+
+      {/* This style block is part of the original code you provided for Alaminos */}
       <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
     </div>
   )
 }
 
-export default BolinaoPage
+export default Bolinao

@@ -1,9 +1,125 @@
 "use client"
 import { useState, useEffect, useMemo } from "react"
-import { ArrowLeft, MapPin, Star, Users, Camera, Trophy, Clock, CheckCircle } from "lucide-react"
+import { ArrowLeft, MapPin, Star, Users, Camera, Trophy, Clock, CheckCircle, Gamepad2, QrCode, Image, ShoppingBag, MapPin as MapPinIcon, MessageSquare, Share2, Utensils, Compass } from "lucide-react" // Added icons for tasks
 import { useNavigate } from 'react-router-dom';
+import GamifiedTaskModal from "../../components/gamified-task-modal"
+
+// Dummy implementations for task generation and progress management
+// These functions are directly included here, similar to the DagupanPage structure.
+const generateTasksForAttraction = (attractionName, category) => {
+  // Common tasks with structure matching GamifiedTaskModal expectations
+  const commonTasks = [
+    {
+      id: 1,
+      title: `Photo Challenge at ${attractionName}`,
+      description: `Capture the best angle of ${attractionName}.`,
+      points: 10,
+      type: "photo_share",
+      difficulty: "Easy",
+      estimatedTime: "5 mins",
+      icon: <Image className="w-5 h-5" />,
+      requirements: ["A clear photo of the landmark", "Good lighting"],
+    },
+    {
+      id: 2,
+      title: `Historical Fact Finding`,
+      description: `Learn and share an interesting historical fact.`,
+      points: 15,
+      type: "explore",
+      difficulty: "Medium",
+      estimatedTime: "10 mins",
+      icon: <Compass className="w-5 h-5" />,
+      requirements: ["Research a fact", "Be able to recite it"],
+    },
+    {
+      id: 3,
+      title: `Social Media Shoutout`,
+      description: `Post about your visit on social media.`,
+      points: 5,
+      type: "social_share",
+      difficulty: "Easy",
+      estimatedTime: "3 mins",
+      icon: <Share2 className="w-5 h-5" />,
+      requirements: ["Public post", "Hashtag #ManaoagAdventure"],
+    },
+  ];
+
+  if (category === "Religious") {
+    return [
+      ...commonTasks,
+      {
+        id: 4,
+        title: `Candle Lighting Ceremony`,
+        description: `Light a candle and offer a prayer.`,
+        points: 20,
+        type: "check_in", // Using check_in type for simplicity, adjust as needed
+        difficulty: "Easy",
+        estimatedTime: "10 mins",
+        icon: <Clock className="w-5 h-5" />, // Placeholder icon
+        requirements: ["Purchase a candle", "Perform the ritual"],
+      },
+      {
+        id: 5,
+        title: `Blessed Item Scan`,
+        description: `Scan the QR code on a blessed item (e.g., rosary).`,
+        points: 25,
+        type: "qr_scan",
+        difficulty: "Medium",
+        estimatedTime: "7 mins",
+        icon: <QrCode className="w-5 h-5" />,
+        requirements: ["Find QR code", "Successful scan"],
+      },
+    ];
+  } else if (category === "Nature") {
+    return [
+      ...commonTasks,
+      {
+        id: 6,
+        title: `Nature Trail Walk`,
+        description: `Complete a walk along the designated nature trail.`,
+        points: 20,
+        type: "explore",
+        difficulty: "Medium",
+        estimatedTime: "30 mins",
+        icon: <Compass className="w-5 h-5" />,
+        requirements: ["Complete the trail", "Take a photo at trail's end"],
+      },
+      {
+        id: 7,
+        title: `Wildlife Spotting`,
+        description: `Identify and photograph at least one local flora or fauna.`,
+        points: 15,
+        type: "photo_share",
+        difficulty: "Hard",
+        estimatedTime: "15 mins",
+        icon: <Camera className="w-5 h-5" />,
+        requirements: ["Clear photo", "Correct identification"],
+      },
+    ];
+  }
+  return commonTasks;
+};
+
+const saveTaskProgress = (attractionName, destination, completedTaskIds, points) => {
+  const key = `taskProgress-${destination}-${attractionName}`;
+  const progress = { completedTasks: completedTaskIds, points: points };
+  localStorage.setItem(key, JSON.stringify(progress));
+};
+
+const loadTaskProgress = (attractionName, destination) => {
+  const key = `taskProgress-${destination}-${attractionName}`;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : null;
+};
+
 
 const ManaoagPage = () => {
+  // State for the gamified task modal
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [selectedAttraction, setSelectedAttraction] = useState(null)
+  const [attractionTasks, setAttractionTasks] = useState([])
+  const [totalUserPoints, setTotalUserPoints] = useState(0)
+
   // Tourist attractions in Manaoag
   const attractions = [
     {
@@ -73,7 +189,7 @@ const ManaoagPage = () => {
       estimatedTime: "30 minutes",
       highlights: ["Candle Lighting", "Spiritual Experience", "Unique Attraction"],
     },
-  
+
   ]
 
   const [searchText, setSearchText] = useState("")
@@ -94,12 +210,25 @@ const ManaoagPage = () => {
     return () => clearTimeout(timer)
   }, [searchText])
 
-  // Get unique categories
+  // Get unique categories (though not currently used for filtering in UI)
   const categories = ["All", ...new Set(attractions.map((attraction) => attraction.category))]
   const navigate = useNavigate();
   const goToHome = () => {
     navigate('/home'); // replace with your target route
   };
+
+  // Initialize total user points from local storage for Manaoag
+  useEffect(() => {
+    let totalPoints = 0
+    attractions.forEach((attraction) => {
+      const progress = loadTaskProgress(attraction.name, "Manaoag")
+      if (progress) {
+        totalPoints += progress.points || 0
+      }
+    })
+    setTotalUserPoints(totalPoints)
+  }, [])
+
 
   // Filter attractions
   const filteredAttractions = useMemo(() => {
@@ -118,13 +247,73 @@ const ManaoagPage = () => {
     const totalVisits = attractions.reduce((sum, a) => sum + (a.isVisited ? a.visitCount : 0), 0)
     const completionRate = Math.round((visitedCount / attractions.length) * 100)
 
+    let totalCompletedTasks = 0
+    let totalTasks = 0
+    attractions.forEach((attraction) => {
+      const tasks = generateTasksForAttraction(attraction.name, attraction.category)
+      totalTasks += tasks.length
+      const progress = loadTaskProgress(attraction.name, "Manaoag")
+      if (progress) {
+        totalCompletedTasks += progress.completedTasks?.length || 0
+      }
+    })
+
     return {
       visited: visitedCount,
       total: attractions.length,
       totalVisits,
       completionRate,
+      totalCompletedTasks, // Added for gamification stats
+      totalTasks,         // Added for gamification stats
     }
-  }, [])
+  }, [attractions]) // Depend on attractions to recalculate when data changes (if it ever would)
+
+  // Function to open the task modal
+  const handleOpenTaskModal = (attraction) => {
+    // Generate base tasks for the selected attraction
+    const tasks = generateTasksForAttraction(attraction.name, attraction.category)
+
+    // Load existing progress for *this specific attraction*
+    const progress = loadTaskProgress(attraction.name, "Manaoag")
+
+    // Update tasks with their completion status based on loaded progress
+    const updatedTasks = tasks.map((task) => ({
+      ...task,
+      isCompleted: progress?.completedTasks?.includes(task.id) || false,
+    }))
+
+    setSelectedAttraction(attraction)
+    setAttractionTasks(updatedTasks) // Set the tasks state
+    setIsTaskModalOpen(true)
+  }
+
+  // Function to handle task completion
+  const handleTaskComplete = (taskId) => {
+    if (!selectedAttraction) return
+
+    setAttractionTasks((prev) => {
+      const updatedTasks = prev.map((task) => {
+        if (task.id === taskId && !task.isCompleted) {
+          return { ...task, isCompleted: true }
+        }
+        return task
+      })
+
+      const completedTaskIds = updatedTasks.filter((t) => t.isCompleted).map((t) => t.id)
+      const points = updatedTasks.reduce((sum, task) => sum + (task.isCompleted ? task.points : 0), 0)
+
+      saveTaskProgress(selectedAttraction.name, "Manaoag", completedTaskIds, points)
+
+      // Update total user points
+      setTotalUserPoints((prev) => {
+        const oldProgress = loadTaskProgress(selectedAttraction.name, "Manaoag")
+        const oldPoints = oldProgress?.points || 0
+        return prev - oldPoints + points
+      })
+
+      return updatedTasks
+    })
+  }
 
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -171,15 +360,24 @@ const ManaoagPage = () => {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <button 
+            <button
               onClick={goToHome}
               className="flex items-center space-x-2 text-[#212121] hover:text-[#66D9ED] transition-colors">
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Cities</span>
             </button>
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-5 h-5 text-[#66D9ED]" />
-              <span className="font-semibold text-[#212121]">Manaoag</span>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <MapPin className="w-5 h-5 text-[#66D9ED]" />
+                <span className="font-semibold text-[#212121]">Manaoag</span>
+              </div>
+              {/* Total User Points Display */}
+              {totalUserPoints > 0 && (
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-semibold flex items-center space-x-2">
+                  <Trophy className="w-5 h-5" />
+                  <span>{totalUserPoints} pts</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -222,7 +420,13 @@ const ManaoagPage = () => {
               label="Total Visits"
               color="text-blue-600"
             />
-            <StatCard icon={<Camera />} value={stats.visited * 3} label="Photos Taken" color="text-purple-600" />
+            {/* Updated StatCard for gamification */}
+            <StatCard
+              icon={<Gamepad2 />}
+              value={`${stats.totalCompletedTasks}/${stats.totalTasks}`}
+              label="Tasks Completed"
+              color="text-purple-600"
+            />
           </div>
         </section>
 
@@ -315,33 +519,37 @@ const ManaoagPage = () => {
                         </div>
                       </div>
 
-                      {/* Stats */}
-                      <div className="flex justify-between items-center text-xs text-gray-500 mb-4">
-                        <div className="flex items-center space-x-3">
-                          <span className="flex items-center space-x-1">
-                            <Users className="w-3 h-3" />
-                            <span>{attraction.visitCount}</span>
-                          </span>
-                          <span className="flex items-center space-x-1">
-                            <Clock className="w-3 h-3" />
-                            <span>{attraction.estimatedTime}</span>
+                      {/* Stats and Action Button wrapped in a single parent div */}
+                      <div>
+                        {/* Stats */}
+                        <div className="flex justify-between items-center text-xs text-gray-500 mb-4">
+                          <div className="flex items-center space-x-3">
+                            <span className="flex items-center space-x-1">
+                              <Users className="w-3 h-3" />
+                              <span>{attraction.visitCount}</span>
+                            </span>
+                            <span className="flex items-center space-x-1">
+                              <Clock className="w-3 h-3" />
+                              <span>{attraction.estimatedTime}</span>
+                            </span>
+                          </div>
+                          <span className="bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full font-medium">
+                            {attraction.difficulty}
                           </span>
                         </div>
-                        <span className="bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full font-medium">
-                          {attraction.difficulty}
-                        </span>
-                      </div>
 
-                      {/* Action Button */}
-                      <button
-                        className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-                          attraction.isVisited
-                            ? "bg-cyan-100 text-cyan-700 hover:bg-cyan-200"
-                            : "bg-[#66D9ED] text-white hover:bg-[#4F9CF9] shadow-lg hover:shadow-xl"
-                        }`}
-                      >
-                        Travel
-                      </button>
+                        {/* Action Button - modified to open modal */}
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleOpenTaskModal(attraction)}
+                            className="flex-1 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 bg-[#66D9ED] text-white hover:bg-[#4F9CF9] shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                          >
+                            <span>Travel</span>
+                            <Gamepad2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div> {/* End of wrapper div */}
+
                     </div>
                   </div>
                 ))
@@ -364,6 +572,19 @@ const ManaoagPage = () => {
           )}
         </section>
       </main>
+
+      {/* Gamified Task Modal */}
+      {selectedAttraction && (
+        <GamifiedTaskModal
+          isOpen={isTaskModalOpen}
+          onClose={() => setIsTaskModalOpen(false)}
+          destinationName="Manaoag" // Hardcoded destination name as per Dagupan example
+          attractionName={selectedAttraction.name}
+          tasks={attractionTasks}
+          onTaskComplete={handleTaskComplete}
+          userPoints={totalUserPoints}
+        />
+      )}
 
       <style jsx>{`
         @keyframes fadeInUp {

@@ -1,6 +1,8 @@
 "use client"
 import { useState, useEffect, useMemo } from "react"
 import { ArrowLeft, MapPin, Star, Users, Trophy, Clock, CheckCircle, Gamepad2 } from "lucide-react"
+// Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import GamifiedTaskModal from "../../components/gamified-task-modal"
 import { generateTasksForAttraction, saveTaskProgress, loadTaskProgress } from "../../utils/task-generator"
 
@@ -9,6 +11,9 @@ const Alaminos = () => {
   const [selectedAttraction, setSelectedAttraction] = useState(null)
   const [attractionTasks, setAttractionTasks] = useState([])
   const [totalUserPoints, setTotalUserPoints] = useState(0)
+
+  // Initialize useNavigate hook
+  const navigate = useNavigate();
 
   // Tourist attractions in Alaminos City
   const attractions = [
@@ -95,6 +100,11 @@ const Alaminos = () => {
   const [searchText, setSearchText] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const [debouncedSearch, setDebouncedSearch] = useState("")
+
+  // Function to navigate to the home page
+  const goToHome = () => {
+    navigate('/home');
+  };
 
   // Calculate total points from all attractions
   useEffect(() => {
@@ -249,7 +259,10 @@ const Alaminos = () => {
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <button className="flex items-center space-x-2 text-[#212121] hover:text-[#66D9ED] transition-colors">
+            <button
+              onClick={goToHome} // Call the goToHome function on click
+              className="flex items-center space-x-2 text-[#212121] hover:text-[#66D9ED] transition-colors"
+            >
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Cities</span>
             </button>
