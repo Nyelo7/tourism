@@ -37,8 +37,8 @@ const Shop = () => {
       id: 1,
       name: "Hundred Islands Platinum Collection",
       category: "nft",
-      basePrice: 15.5,
-      minPrice: 3.2,
+      basePrice: 75,
+      minPrice: 50,
       maxPointsDiscount: 4000,
       rank: "gold",
       type: "nft",
@@ -48,7 +48,7 @@ const Shop = () => {
       views: 12050,
       edition: "1/50",
       benefits: [
-        "10% discount on selected shops",
+        "15% discount on selected shops",
         "Exclusive VIP holder events",
         "10% resale royalties",
         "Private yacht access",
@@ -61,8 +61,8 @@ const Shop = () => {
       id: 2,
       name: "Bolinao Lighthouse Masterpiece",
       category: "nft",
-      basePrice: 8.7,
-      minPrice: 1.8,
+      basePrice: 50,
+      minPrice: 20,
       maxPointsDiscount: 2500,
       rank: "silver",
       type: "nft",
@@ -84,8 +84,8 @@ const Shop = () => {
       id: 3,
       name: "Artisan Travel T-Shirt",
       category: "physical",
-      basePrice: 2.3,
-      minPrice: 0,
+      basePrice: 20,
+      minPrice: 10,
       maxPointsDiscount: 4000,
       rank: "bronze",
       type: "physical",
@@ -104,8 +104,8 @@ const Shop = () => {
       id: 4,
       name: "Legendary Explorer Genesis Badge",
       category: "digital",
-      basePrice: 12.8,
-      minPrice: 2.5,
+      basePrice: 80,
+      minPrice: 50,
       maxPointsDiscount: 3000,
       rank: "gold",
       type: "nft",
@@ -115,7 +115,7 @@ const Shop = () => {
       views: 15670,
       edition: "Genesis #47",
       benefits: [
-        "10% discount on selected shops",
+        "15% discount on selected shops",
         "DAO governance rights",
         "Achievement tracking",
         "Priority access to drops",
@@ -127,8 +127,8 @@ const Shop = () => {
       id: 5,
       name: "Tropical Paradise Animated NFT",
       category: "digital",
-      basePrice: 6.9,
-      minPrice: 1.4,
+      basePrice: 50,
+      minPrice: 20,
       maxPointsDiscount: 2000,
       rank: "silver",
       type: "nft",
@@ -149,8 +149,8 @@ const Shop = () => {
       id: 6,
       name: "Platinum Souvenir Pin Collection",
       category: "physical",
-      basePrice: 1.8,
-      minPrice: 0,
+      basePrice: 20,
+      minPrice: 10,
       maxPointsDiscount: 2000,
       rank: "bronze",
       type: "physical",
@@ -263,7 +263,7 @@ const Shop = () => {
             <div className="flex justify-between items-center">
               <div>
                 <div className="text-xl font-black text-slate-900">{item.basePrice} ICP</div>
-                <div className="text-xs text-slate-500">≈ ${(item.basePrice * 12.5).toFixed(0)} USD</div>
+                <div className="text-xs text-slate-500">≈ ${(item.basePrice * 5).toFixed(0)} USD</div>
               </div>
               <button
                 onClick={() => setShowDetails(!showDetails)}
