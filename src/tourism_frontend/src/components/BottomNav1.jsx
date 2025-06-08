@@ -6,6 +6,7 @@ import {
   FaShoppingBag,
   FaUser,
   FaChartLine,
+  FaCar
 } from 'react-icons/fa';
 
 const BottomNav = () => {
@@ -13,6 +14,7 @@ const BottomNav = () => {
 
   const navItems = [
     { path: '/home', label: 'Home', icon: <FaHome /> },
+    { path: '/travel', label: 'Smart Travel', icon: <FaCar /> },
     { path: '/map', label: 'Map', icon: <FaMapMarkedAlt /> },
     { path: '/shop', label: 'Shop', icon: <FaShoppingBag /> },
     { path: '/profile', label: 'Profile', icon: <FaUser /> },

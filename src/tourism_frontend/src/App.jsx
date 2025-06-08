@@ -15,6 +15,7 @@ import AlaminosPage from './pages/city/Alaminos';
 import ManaoagPage from './pages/city/Manaoag';
 import BolinaoPage from './pages/city/Bolinao';
 import FAQ from './pages/faq';
+import Travel from './pages/Travel'
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/site/:id" element={<Site />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/travel" element={<Travel />} />
 
 
         <Route path="/city/dagupan" element={<DagupanPage />} />
