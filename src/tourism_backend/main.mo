@@ -4,17 +4,20 @@ import Result "mo:base/Result";
 import Principal "mo:base/Principal";
 import Iter "mo:base/Iter";
 
-// Define the actor for the tourism backend
-actor {
-  // Stable storage for wallet address to username mapping
+actor TourismBackend {
+
+  // Stable storage serialized as array of entries (wallet, username)
   stable var entries : [(Text, Text)] = [];
+
+  // In-memory HashMap for quick lookup
   let walletToUsername = HashMap.HashMap<Text, Text>(10, Text.equal, Text.hash);
 
-  // Initialize the HashMap from stable storage on canister upgrade
+  // Save the current map into stable var before upgrade
   system func preupgrade() {
     entries := Iter.toArray(walletToUsername.entries());
   };
 
+  // Restore the map from stable var after upgrade
   system func postupgrade() {
     for ((wallet, username) in entries.vals()) {
       walletToUsername.put(wallet, username);
@@ -22,7 +25,7 @@ actor {
     entries := [];
   };
 
-  // Function to check if a wallet address exists and return its username
+  // Check if a wallet address exists, and return username if yes
   public shared query func checkWallet(walletAddress : Text) : async { exists : Bool; username : ?Text } {
     switch (walletToUsername.get(walletAddress)) {
       case (?username) { { exists = true; username = ?username } };
@@ -30,9 +33,8 @@ actor {
     };
   };
 
-  // Function to register a new username for a wallet address
+  // Register a new username for a wallet address
   public shared func registerUsername(walletAddress : Text, username : Text) : async Result.Result<Text, Text> {
-    // Validate inputs
     if (Text.size(walletAddress) == 0) {
       return #err("Wallet address cannot be empty");
     };
@@ -40,20 +42,18 @@ actor {
       return #err("Username cannot be empty");
     };
 
-    // Check if wallet is already registered
     switch (walletToUsername.get(walletAddress)) {
       case (?existingUsername) {
         return #err("Wallet already registered with username: " # existingUsername);
       };
       case null {
-        // Register the new username
         walletToUsername.put(walletAddress, username);
         return #ok("Username registered successfully");
       };
     };
   };
 
-  // Optional: Function to get the caller's Principal (for debugging or future use)
+  // Optional: return caller's Principal for debugging
   public shared query (msg) func whoami() : async Principal {
     msg.caller
   };
