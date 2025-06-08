@@ -50,7 +50,8 @@ const Login = () => {
       const address = accounts[0];
       setWalletAddress(address);
       setStatus(`Connected to wallet: ${address.slice(0, 6)}...${address.slice(-4)}`);
-      await checkWalletAddress(address);
+      // Immediately navigate to home after successful connection
+      navigate('/home');
     } catch (error) {
       setStatus(`Connection failed: ${error.message}`);
     } finally {
@@ -58,7 +59,7 @@ const Login = () => {
     }
   };
 
-  // Check wallet address in backend
+  // Check wallet address in backend - this function will no longer be called directly after connection if you always navigate to home
   const checkWalletAddress = async (address) => {
     try {
       const actor = await initActor();
