@@ -80,7 +80,7 @@ const QRScanner = ({ onResult, onClose }) => {
               context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
               
               // Here you would implement a QR code detection algorithm
-              // For now, we'll just simulate detection with a timeout
+              // For now, we'll just simulate detection with a timeouts
               setTimeout(() => {
                 if (scanning) {
                   requestAnimationFrame(scanFrame);

@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer className="w-full p-8 mt-12 bg-charcoal-gray text-subtle-gray">
       <div className="container mx-auto text-center">
-        <p className="mb-3 text-lg">&copy; {currentYear} Hackatour. All rights reserved.</p>
+        <p className="mb-3 text-lg">&copy; {currentYear} Hackatour. All rights reserved 2025.</p>
         <div className="flex justify-center space-x-6 mt-4">
           <a href="#" className="block text-subtle-gray hover:text-cyan-vibrant transition-colors duration-300 hover:underline">Privacy Policy</a>
           <a href="#" className="block text-subtle-gray hover:text-cyan-vibrant transition-colors duration-300 hover:underline">Terms of Service</a>

@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 
-/* Header Styles */
+/* Header Style */
 .dashboard-header {
   background: var(--surface-color);
   border-radius: var(--radius-lg);

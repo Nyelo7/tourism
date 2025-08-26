@@ -7,7 +7,7 @@ import Register from './pages/Register';
 import Site from './pages/Site';
 import Profile from './pages/Profile';
 import Map from './pages/Maps';
-import Shop from './pages/Shop'; // Create this file
+import Shop from './pages/Shop'; // Create this files
 import LandingPage from './pages/LandingPage';
 import Signup from './pages/Signup';
 import DagupanPage from './pages/city/Dagupan';

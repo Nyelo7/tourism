@@ -32,7 +32,7 @@ const BottomNav = () => {
             className={`flex flex-col items-center transition-transform duration-300 ${
               isActive
                 ? 'text-blue-600 scale-105'
-                : 'text-gray-500 hover:text-blue-500 hover:scale-105'
+                : 'text-gray-400 hover:text-blue-500 hover:scale-105'
             }`}
           >
             <div className="text-xl mb-1">{icon}</div>

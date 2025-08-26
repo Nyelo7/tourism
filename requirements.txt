@@ -3,4 +3,4 @@ npm install phosphor-react
 npm install react-animate-on-scroll --save
 npm install framer-motion
 npm install lucide-react
- sarap
+npm
