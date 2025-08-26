@@ -25,7 +25,7 @@ actor TourismBackend {
     entries := [];
   };
 
-  // Check if a wallet address exists, and return username if yes
+  // Check if a wallet address exists, and return username if yess
   public shared query func checkWallet(walletAddress : Text) : async { exists : Bool; username : ?Text } {
     switch (walletToUsername.get(walletAddress)) {
       case (?username) { { exists = true; username = ?username } };
