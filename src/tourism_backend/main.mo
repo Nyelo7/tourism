@@ -25,7 +25,7 @@ actor TourismBackend {
     entries := [];
   };
 
-  // Check if a wallet address exists, and return username if yess
+  // Check if a wallet address exists, and return username if yes
   public shared query func checkWallet(walletAddress : Text) : async { exists : Bool; username : ?Text } {
     switch (walletToUsername.get(walletAddress)) {
       case (?username) { { exists = true; username = ?username } };
@@ -56,5 +56,28 @@ actor TourismBackend {
   // Optional: return caller's Principal for debugging
   public shared query (msg) func whoami() : async Principal {
     msg.caller
+  };
+
+  // 🔹 Added: Get total registered users
+  public shared query func getUserCount() : async Nat {
+    walletToUsername.size()
+  };
+
+  // 🔹 Added: Get all registered users (wallet, username)
+  public shared query func getAllUsers() : async [(Text, Text)] {
+    Iter.toArray(walletToUsername.entries())
+  };
+
+  // 🔹 Added: Update username for an existing wallet
+  public shared func updateUsername(walletAddress : Text, newUsername : Text) : async Result.Result<Text, Text> {
+    switch (walletToUsername.get(walletAddress)) {
+      case null {
+        return #err("Wallet not found. Please register first.");
+      };
+      case (?_) {
+        walletToUsername.put(walletAddress, newUsername);
+        return #ok("Username updated successfully");
+      };
+    };
   };
 };
